@@ -1,5 +1,5 @@
 import { Button } from "@aws-amplify/ui-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
 import axios from "axios";
@@ -9,30 +9,10 @@ import "./SearchPage.css";
 const client = generateClient<Schema>();
 
 export const SearchPage = () => {
-  const [newCollectionEntry, setNewCollectionEntry] = useState<
-    Array<Schema["Binder"]["type"]>
-  >([]);
   const [card, setCard] = useState<any>(null);
   const [cardName, setCardName] = useState("");
   const [popupVisible, setPopupVisible] = useState(false); // State for the popup
   const [loading, setLoading] = useState(false); // State for loading spinner
-
-  useEffect(() => {
-    const subscription = client.models.Binder.observeQuery().subscribe({
-      next: (data) => {
-        console.log("Observed Binder items:", data.items, card);
-        setNewCollectionEntry(data.items); // Update state with observed items
-      },
-      error: (error) => {
-        console.error("Error observing Binder items:", error);
-      },
-    });
-
-    // Cleanup the subscription when the component unmounts
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
 
   const [firstSearch, setFirstSearch] = useState(
     "Welcome! Please enter the card name you are looking for."

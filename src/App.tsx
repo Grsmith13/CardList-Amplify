@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-import type { Schema } from "../amplify/data/resource";
-import { generateClient } from "aws-amplify/data";
+import { useState } from "react";
+
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { SearchPage } from "./SearchPage";
 import { CollectionPage } from "./CollectionPage";
 import "./App.css";
-
-const client = generateClient<Schema>();
 
 function App() {
   const { signOut, user } = useAuthenticator();

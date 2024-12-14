@@ -132,14 +132,33 @@ export const SearchPage = () => {
 
       {/* Card Display */}
       <div className="card-container">
-        <div className="card-image">
-          <img
-            src={
-              card?.CardImages[0]?.image_url_small ||
-              "https://img-9gag-fun.9cache.com/photo/aZyoZDV_460s.jpg"
-            }
-            alt="facedown yugioh card"
-          />
+        <div
+          className="card-image"
+          style={{ background: "linear-gradient(to bottom, #d3a15e, #b58341)" }}
+        >
+          <div className="retro-name">{card?.Name || null}</div>
+          <div
+            className="retro-level"
+            style={{ color: "yellow", padding: "1px" }}
+          >
+            {card?.Level != null ? "*".repeat(card.Level) : null}
+          </div>
+          <div className="retro-img">
+            <img
+              src={
+                card?.CardImages[0]?.image_url_cropped ||
+                "https://img-9gag-fun.9cache.com/photo/aZyoZDV_460s.jpg"
+              }
+              alt="facedown yugioh card"
+            />
+          </div>
+          <div className="retro-stats">
+            <div className="retro-type">{card?.Race || null}</div>
+            <div className="retro-AD">
+              <div>{card?.ATK != null ? "A " + card.ATK : null}</div>
+              <div>{card?.DEF != null ? "D " + card.DEF : null}</div>
+            </div>
+          </div>
         </div>
 
         <div className="card-information">
@@ -147,7 +166,7 @@ export const SearchPage = () => {
             <>
               <strong>{card.Name}</strong>
               <p>
-                Attribute and Monster/Card Type: {card.Attribute}/{card.Race}/
+                Attribute and Monster/Attribute: {card.Attribute}/{card.Race}/
                 {card.Type}
               </p>
               <p className="card-desc">Text/Effect: {card.Description}</p>

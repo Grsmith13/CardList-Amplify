@@ -2,7 +2,7 @@
 
 body {
   font-family: "Arial", sans-serif;
-  background-color: #1a1a1a; /* Dark background reminiscent of game screens */
+
   color: #f0f0f0; /* Light text for readability */
   margin: 0;
   padding: 0;
@@ -60,23 +60,82 @@ button:hover {
   align-items: flex-start;
   margin: 2rem auto;
   padding: 1rem;
-  background-color: #222;
+  background-color: #01487e;
   border: 2px solid #555;
   border-radius: 8px;
-  max-width: 800px;
+  width: 50%;
   color: white;
 }
 
 .card-image {
+  display: flex;
+  flex-direction: column;
+  background-color: gold;
+  border: 1px groove grey;
   margin-right: 1.5rem;
+  margin-right: 1.5rem;
+  background: linear-gradient(to bottom, #d3a15e, #b58342);
+  border: 0px groove black;
+  border-radius: 0.4px;
+  box-shadow: 0px 0px 0px 4px rgb(208 204 213),
+    inset 0px 0px 2.5px 1px rgb(22, 22, 22);
 }
 
-.card-image img {
-  width: 200px;
-  height: auto;
-  border: 1px solid #777;
-  border-radius: 4px;
-  background-color: black;
+.card-image .retro-name {
+  width: auto;
+  margin-top: 5px;
+  margin-left: 5px;
+  margin-right: 5px;
+  padding: 5px;
+  margin-bottom: 5px;
+  outline: 1px groove black; /* Outer black border */
+  color: black;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  box-shadow: inset 4px 0px 7px -2px whitesmoke,
+    /* Light right-side highlight */ inset -4px 0px 7px -2px #4b3d2f,
+    /* Dark left-side shadow */ inset 0px 4px 8px -2px whitesmoke,
+    /* Light bottom highlight */ inset 0px -4px 8px -2px #4b3d2f; /* Dark top shadow */
+  border-radius: 2px; /* Slight rounding for a polished look */
+}
+
+.card-image .retro-level {
+  display: flex;
+  flex-direction: row-reverse;
+  margin-right: 8px;
+}
+
+.card-image .retro-stats {
+  display: grid;
+  grid-template-columns: auto auto;
+  justify-items: center;
+  color: black;
+}
+.card-image .retro-AD {
+  display: grid;
+  padding: 0.5rem;
+  color: black;
+
+  box-shadow: inset 4px 0px 7px -2px whitesmoke,
+    /* Light right-side highlight */ inset -4px 0px 7px -2px #4b3d2f,
+    /* Dark left-side shadow */ inset 0px 4px 8px -2px whitesmoke,
+    /* Light bottom highlight */ inset 0px -4px 8px -2px #4b3d2f; /* Dark top shadow */
+  border-radius: 2px; /* Slight rounding for a polished look */
+}
+.card-image .retro-img {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.card-image .retro-img img {
+  width: 90%;
+  height: 70%;
+  border: 0.7px groove black;
+  border-radius: 0.4px;
+  box-shadow: 0px 0px 0px 4px rgb(214 208 201);
 }
 
 .card-information {

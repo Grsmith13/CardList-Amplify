@@ -3,10 +3,11 @@ import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import "./CollectionPage.css"; // Import the CSS file
 
+// Initialize the client for querying and mutating the data
 const client = generateClient<Schema>();
 
 export const CollectionPage = () => {
-  const [todos, setTodos] = useState<Array<Schema["Binder"]["type"]>>([]);
+  const [todos, setTodos] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
   const [loading, setLoading] = useState(true);
 
   // Fetch cards when the component mounts
@@ -28,21 +29,20 @@ export const CollectionPage = () => {
     };
   }, []);
 
+  // Delete card from the collection by ID
   async function deleteCardFromCollection(cardID: string | undefined) {
     if (cardID) {
       try {
-        // Assuming the id field is the partition key, we delete by 'id'
-        const cardToDelete = todos.find((card) => card.CardID === cardID); // Find the card by its CardID
+        // Find the card by CardID
+        const cardToDelete = todos.find((card) => card.CardID === cardID);
         if (cardToDelete) {
-          // Delete the card from your "Binder" model using the correct property name 'id'
+          // Delete the card from the model
           await client.models.Binder.delete({ id: cardToDelete.id });
 
-          // Update the UI state to reflect the deletion
-          setTodos(
-            (prevCards) =>
-              prevCards.filter((card) => card.id !== cardToDelete.id) // Use 'id' to remove the card
+          // Update the UI state after deletion
+          setTodos((prevCards) =>
+            prevCards.filter((card) => card.id !== cardToDelete.id)
           );
-
           console.log(`Card with id ${cardToDelete.id} deleted successfully.`);
         } else {
           console.error(`Card with CardID ${cardID} not found.`);
@@ -56,9 +56,9 @@ export const CollectionPage = () => {
   }
 
   return (
-    <div className="container">
+    <div className="collection-container">
       <div className="header">
-        <h2>CollectionPage</h2>
+        <h2>My Card Collection</h2>
       </div>
 
       {loading ? (
@@ -83,7 +83,6 @@ export const CollectionPage = () => {
               <button
                 onClick={() => {
                   if (card.CardID) {
-                    // Check if card.CardID is a valid string
                     deleteCardFromCollection(card.CardID);
                   } else {
                     console.error("CardID is invalid.");

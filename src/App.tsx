@@ -1,5 +1,4 @@
 import { useState } from "react";
-
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { SearchPage } from "./SearchPage";
 import { CollectionPage } from "./CollectionPage";
@@ -9,7 +8,6 @@ function App() {
   const { signOut, user } = useAuthenticator();
   const [currentPage, setCurrentPage] = useState<string>("collection");
 
-  // Render different pages based on user authentication status
   const renderPage = () => {
     if (!user) {
       return (
@@ -28,27 +26,15 @@ function App() {
 
   return (
     <div className="app-container">
-      {/* Header Bar with Page Buttons and Sign Out */}
-      <div className="auth-header">
+      {/* Header Bar */}
+      <div className="auth-header-bar">
         {user && (
           <button onClick={signOut} className="sign-out-btn">
             Sign out
           </button>
         )}
-      </div>
-
-      {/* Page Buttons Bar */}
-      <div className="page-buttons">
-        <button
-          onClick={() => setCurrentPage("search")}
-          className="page-button"
-        >
-          Search Cards
-        </button>
-        <button
-          onClick={() => setCurrentPage("collection")}
-          className="page-button"
-        >
+        <button onClick={() => setCurrentPage("search")}>Search Cards</button>
+        <button onClick={() => setCurrentPage("collection")}>
           My Collection
         </button>
       </div>

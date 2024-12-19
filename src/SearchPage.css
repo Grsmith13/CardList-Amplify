@@ -20,10 +20,15 @@ form {
 
 form h4 {
   font-size: 1.2rem;
-  color: #ffcc00; /* Gold text reminiscent of old UI */
+  color: white;
   margin-bottom: 0.5rem;
+  font-family: "Press Start 2P", cursive; /* Optional: Retro font */
+  margin-top: 5px;
 }
-
+.form-buttons {
+  display: flex;
+  justify-content: space-evenly;
+}
 input {
   width: 80%;
   padding: 0.5rem;
@@ -52,107 +57,6 @@ button {
 
 button:hover {
   background-color: #005fa3; /* Darker blue */
-}
-
-.card-container {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  margin: 2rem auto;
-  padding: 1rem;
-  background-color: #01487e;
-  border: 2px solid #555;
-  border-radius: 8px;
-  width: 50%;
-  color: white;
-}
-
-.card-image {
-  display: flex;
-  flex-direction: column;
-  background-color: gold;
-  border: 1px groove grey;
-  margin-right: 1.5rem;
-  margin-right: 1.5rem;
-  background: linear-gradient(to bottom, #d3a15e, #b58342);
-  border: 0px groove black;
-  border-radius: 0.4px;
-  box-shadow: 0px 0px 0px 4px rgb(208 204 213),
-    inset 0px 0px 2.5px 1px rgb(22, 22, 22);
-}
-
-.card-image .retro-name {
-  width: auto;
-  margin-top: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-  padding: 5px;
-  margin-bottom: 5px;
-  outline: 1px groove black; /* Outer black border */
-  color: black;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  box-shadow: inset 4px 0px 7px -2px whitesmoke,
-    /* Light right-side highlight */ inset -4px 0px 7px -2px #4b3d2f,
-    /* Dark left-side shadow */ inset 0px 4px 8px -2px whitesmoke,
-    /* Light bottom highlight */ inset 0px -4px 8px -2px #4b3d2f; /* Dark top shadow */
-  border-radius: 2px; /* Slight rounding for a polished look */
-}
-
-.card-image .retro-level {
-  display: flex;
-  flex-direction: row-reverse;
-  margin-right: 8px;
-}
-
-.card-image .retro-stats {
-  display: grid;
-  grid-template-columns: auto auto;
-  justify-items: center;
-  color: black;
-}
-.card-image .retro-AD {
-  display: grid;
-  padding: 0.5rem;
-  color: black;
-
-  box-shadow: inset 4px 0px 7px -2px whitesmoke,
-    /* Light right-side highlight */ inset -4px 0px 7px -2px #4b3d2f,
-    /* Dark left-side shadow */ inset 0px 4px 8px -2px whitesmoke,
-    /* Light bottom highlight */ inset 0px -4px 8px -2px #4b3d2f; /* Dark top shadow */
-  border-radius: 2px; /* Slight rounding for a polished look */
-}
-.card-image .retro-img {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 8px;
-}
-
-.card-image .retro-img img {
-  width: 90%;
-  height: 70%;
-  border: 0.7px groove black;
-  border-radius: 0.4px;
-  box-shadow: 0px 0px 0px 4px rgb(214 208 201);
-}
-
-.card-information {
-  max-width: 500px;
-}
-
-.card-information strong {
-  display: block;
-  font-size: 1.5rem;
-  color: #ffcc00; /* Gold for emphasis */
-  margin-bottom: 0.5rem;
-}
-
-.card-information p {
-  font-size: 1rem;
-  line-height: 1.5;
-  margin-bottom: 0.5rem;
 }
 
 /* Spinner animation */
@@ -198,4 +102,104 @@ button:hover {
 
 .close-btn:hover {
   background: #d32f2f;
+}
+
+/* Main container to center the page content */
+.container {
+  max-width: 1000px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #003366;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Card name on top */
+.card-name-display {
+  font-family: "Press Start 2P", cursive; /* Optional: Retro font */
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  display: flex;
+  justify-content: center;
+  background-color: #003366; /* Dark blue background */
+  color: white;
+  background-color: #1c3d5c; /* Slightly lighter dark blue */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Card detail container (Image + Info) */
+.card-details-container {
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* Left side: Card Image */
+.card-image-container {
+  flex: 1;
+  padding-right: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Right side: Card Info */
+.card-info {
+  flex: 2;
+  padding: 20px;
+  background-color: #003366; /* Dark blue background */
+  color: #fff;
+  border-radius: 10px;
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Card Info Box (Details) */
+.card-info-box {
+  background-color: #1c3d5c; /* Slightly lighter dark blue */
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Label and value for each card attribute */
+.card-info-box .card-attribute {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-info-box .card-attribute span {
+  font-weight: bold;
+}
+
+/* Card Description Box */
+.card-description-box {
+  background-color: #1c3d5c;
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-description {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Button to perform an action on the card (e.g., view more details) */
+.card-info .card-button {
+  background-color: #007bff;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.card-info .card-button:hover {
+  background-color: #0056b3;
 }

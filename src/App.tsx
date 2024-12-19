@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { SearchPage } from "./SearchPage";
 import { CollectionPage } from "./CollectionPage";
+
 import "./App.css";
 
 function App() {

@@ -5,7 +5,7 @@ import type { Schema } from "../amplify/data/resource";
 import axios from "axios";
 import { API_URL } from "./utils";
 import "./SearchPage.css";
-
+import { Card } from "./components/Card";
 const client = generateClient<Schema>();
 
 export const SearchPage = () => {
@@ -26,7 +26,7 @@ export const SearchPage = () => {
     setLoading(true); // Set loading to true when fetching card data
     try {
       const response = await axios.get(`${API_URL}/${cardName}`);
-      console.log("handleFetch card found " + cardName);
+
       setFirstSearch(
         "Sorry that card does not exist. Please retry entering the name."
       );
@@ -89,6 +89,51 @@ export const SearchPage = () => {
     }
   };
 
+  const onRender = () => {
+    if (card) {
+      return (
+        <>
+          <div className="card-name-display">{card.Name}</div>
+
+          <div className="card-details-container">
+            <div className="card-image-container">
+              {card ? (
+                <Card cardInfo={card} />
+              ) : (
+                <div></div> // Or return null or a spinner
+              )}
+            </div>
+
+            <div className="card-info">
+              <div className="card-info-box">
+                <div className="card-attribute">
+                  <span>Type:</span> {card.Race}
+                </div>
+                <div className="card-attribute"></div>
+                <div className="card-attribute">
+                  <span>Level:</span>
+                  {card.Level}
+                </div>
+              </div>
+
+              <div className="card-description-box">
+                <div className="card-description">
+                  <span>{card.Description}</span>
+                </div>
+              </div>
+
+              {/* <button className="card-button"></button> */}
+            </div>
+          </div>
+        </>
+      );
+    } else {
+      return (
+        <div style={{ textAlign: "center", color: "white" }}>{firstSearch}</div>
+      );
+    }
+  };
+
   return (
     <>
       {/* Search and Add Form */}
@@ -115,12 +160,14 @@ export const SearchPage = () => {
           onChange={handleInputChange}
           required
         />
-        <Button onClick={handleFetchCard} type="button">
-          Search
-        </Button>
-        <Button onClick={handleAddCollection} type="submit">
-          Add
-        </Button>
+        <div className="form-buttons">
+          <Button onClick={handleFetchCard} type="button">
+            Search
+          </Button>
+          <Button onClick={handleAddCollection} type="submit">
+            Add
+          </Button>
+        </div>
       </form>
 
       {/* Loading Spinner */}
@@ -131,54 +178,7 @@ export const SearchPage = () => {
       )}
 
       {/* Card Display */}
-      <div className="card-container">
-        <div
-          className="card-image"
-          style={{ background: "linear-gradient(to bottom, #d3a15e, #b58341)" }}
-        >
-          <div className="retro-name">{card?.Name || null}</div>
-          <div
-            className="retro-level"
-            style={{ color: "yellow", padding: "1px" }}
-          >
-            {card?.Level != null ? "*".repeat(card.Level) : null}
-          </div>
-          <div className="retro-img">
-            <img
-              src={
-                card?.CardImages[0]?.image_url_cropped ||
-                "https://img-9gag-fun.9cache.com/photo/aZyoZDV_460s.jpg"
-              }
-              alt="facedown yugioh card"
-            />
-          </div>
-          <div className="retro-stats">
-            <div className="retro-type">{card?.Race || null}</div>
-            <div className="retro-AD">
-              <div>{card?.ATK != null ? "A " + card.ATK : null}</div>
-              <div>{card?.DEF != null ? "D " + card.DEF : null}</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="card-information">
-          {card ? (
-            <>
-              <strong>{card.Name}</strong>
-              <p>
-                Attribute and Monster/Attribute: {card.Attribute}/{card.Race}/
-                {card.Type}
-              </p>
-              <p className="card-desc">Text/Effect: {card.Description}</p>
-              <p>
-                ATK/{card.ATK} DEF/{card.DEF}
-              </p>
-            </>
-          ) : (
-            <p>{firstSearch}</p>
-          )}
-        </div>
-      </div>
+      <div className="container">{onRender()}</div>
 
       {/* Modal Popup */}
       {popupVisible && (

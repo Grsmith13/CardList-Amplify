@@ -1,0 +1,158 @@
+/* body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+  font-family: Arial, sans-serif;
+} */
+
+.card {
+  display: grid;
+  grid-template-rows: 10% 10% 60% 20%;
+  grid-template-areas:
+    "name"
+    "level"
+    "artwork"
+    "stats";
+  width: 300px;
+  height: 450px;
+  background-color: #ea6316;
+  background-image: linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.2) 25%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0.2) 75%
+    ),
+    url("src\\assets\\card_texture.png");
+  background-size: 100% 100%, 150px 150px; /* Adjust the size of the texture */
+  background-position: center;
+  background-repeat: repeat;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+  position: relative;
+  border-top: 5px solid #b0b0b0; /* Slightly darker silver for top */
+  border-left: 5px solid #b0b0b0; /* Slightly darker silver for left */
+  border-bottom: 5px solid #a0a0a0; /* Even darker silver for bottom */
+  border-right: 5px solid #a0a0a0; /* Even darker silver for right */
+
+  border-radius: 1.5px;
+}
+
+.card-top {
+  grid-area: name;
+  margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
+
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.8;
+  font-weight: bold;
+  display: inline-block;
+  border-top: 4px solid #f5945c; /* Top-left highlight */
+  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-bottom: 4px solid #f5945c; /* Top-left highlight */
+  border-right: 4px solid #f5945c; /* Top-left highlight */
+  border-right-color: #0000004f;
+  border-bottom-color: #0000004f;
+  box-shadow: 1px 0.5px 0px #60606054;
+  font-family: "Press Start 2P", cursive; /* Optional: Retro font */
+}
+
+.card-type {
+  grid-area: type;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  background-color: #d1b58e;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.card-artwork {
+  grid-area: artwork;
+  background-size: cover;
+  background-position: center;
+
+  margin: 5px 10px;
+}
+
+/* Inner layer */
+.card-artwork::before {
+  content: "";
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  right: 5px;
+  bottom: 5px;
+  background: #fff; /* Inner card background */
+  border-radius: 8px; /* Match inner corners */
+  z-index: -1; /* Place it behind the content */
+}
+
+.card-artwork img {
+  margin-top: 4px;
+  width: 100%; /* Makes the image fill the container */
+  height: 100%; /* Makes the image cover the container */
+  object-fit: cover; /* Ensures the image covers the area without stretching */
+  object-position: center; /* Ensures the image is centered */
+  border-top: 4px solid #e6e6e6; /* Top-left highlight */
+  border-left: 4px solid #cccccc; /* Top-left highlight */
+  border-bottom: 4px solid #ffffff; /* Top-left highlight */
+  border-right: 4px solid #dbdada; /* Top-left highlight */
+
+  border-radius: 1.5px;
+}
+.card-level {
+  grid-area: level;
+  padding: 5px 10px;
+  margin-top: 5px;
+  display: flex;
+  flex-direction: row-reverse;
+  font-size: 0.8rem;
+  line-height: 1.2;
+  overflow: auto;
+}
+
+.card-stats {
+  grid-area: stats;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.card-stats-type {
+  display: inline-block;
+  font-size: 0.5rem;
+  margin-right: 5px;
+  margin-left: 5px;
+  padding: 4px; /* Space inside the element */
+  border-top: 4px solid #f5945c; /* Top-left highlight */
+  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-bottom: 4px solid #f5945c; /* Top-left highlight */
+  border-right: 4px solid #f5945c; /* Top-left highlight */
+  border-right-color: #0000004f;
+  border-bottom-color: #0000004f;
+  box-shadow: 1px 0.5px 0px #60606054;
+  font-family: "Press Start 2P", cursive; /* Optional: Retro font */
+}
+
+.card-stats-AD {
+  display: flex;
+  flex-direction: column;
+  margin-right: 10px;
+  padding: 10px; /* Space inside the element */
+  border-top: 4px solid #f5945c; /* Top-left highlight */
+  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-bottom: 4px solid #f5945c; /* Top-left highlight */
+  border-right: 4px solid #f5945c; /* Top-left highlight */
+  border-right-color: #0000004f;
+  border-bottom-color: #0000004f;
+  box-shadow: 1px 0.5px 0px #60606054;
+  font-family: "Press Start 2P", cursive; /* Font reminiscent of Gameboy Advance era */
+}

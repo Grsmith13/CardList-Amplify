@@ -1,146 +1,117 @@
 import { Button } from "@aws-amplify/ui-react";
-import { useState } from "react";
+import { useState, useMemo, useCallback } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
-import axios from "axios";
-import { API_URL } from "./utils";
 import "./SearchPage.css";
 import { Card } from "./components/Card";
+import Pagination from "./components/Pagination";
+import {
+  getCard,
+  getData,
+  searchCardsByKeyword,
+} from "./components/CreateCache";
+
 const client = generateClient<Schema>();
 
 export const SearchPage = () => {
   const [card, setCard] = useState<any>(null);
+  const [cards, setCards] = useState<any[]>([]);
   const [cardName, setCardName] = useState("");
-  const [popupVisible, setPopupVisible] = useState(false); // State for the popup
-  const [loading, setLoading] = useState(false); // State for loading spinner
-
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [firstSearch, setFirstSearch] = useState(
     "Welcome! Please enter the card name you are looking for."
   );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage, setPostsPerPage] = useState(9);
+
   const handleInputChange = (e: any) => {
-    e.preventDefault();
     setCardName(e.target.value);
   };
 
-  const handleFetchCard = async () => {
-    setLoading(true); // Set loading to true when fetching card data
+  const handleButtonClick = useCallback(async () => {
+    if (!cardName.trim()) return;
     try {
-      const response = await axios.get(`${API_URL}/${cardName}`);
-
-      setFirstSearch(
-        "Sorry that card does not exist. Please retry entering the name."
-      );
-      setCard(response.data[0]);
+      setLoading(true);
+      const cardData = await searchCardsByKeyword(cardName);
+      setCards(cardData);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching card data:", error);
     } finally {
-      setLoading(false); // Set loading to false after fetch is done
+      setLoading(false);
     }
-  };
+    console.log(cards);
+  }, [cardName]);
 
   const handleAddCollection = () => {
-    setLoading(true); // Set loading to true when adding the card to the collection
-    if (card) {
+    setLoading(true);
+    console.log("cards[0] =", cards[0].CardImages_1_imageUrl);
+    if (cards) {
       client.models.Binder.create({
-        CardID: card.CardID,
-        ATK: card.ATK,
-        Attribute: card.Attribute,
-        DEF: card.DEF,
-        Description: card.Description,
-        FrameType: card.FrameType,
-        Level: card.Level,
-        Name: card.Name,
-        Race: card.Race,
-        Type: card.Type,
-
-        // CardImages (flattened fields, assuming card.CardImages is an array of image objects)
-        CardImages_1_id: card.CardImages[0]?.id,
-        CardImages_1_imageUrl: card.CardImages[0]?.image_url,
-        CardImages_1_imageUrlCropped: card.CardImages[0]?.image_url_cropped,
-        CardImages_1_imageUrlSmall: card.CardImages[0]?.image_url_small,
-
-        // CardPrices (flattened fields)
-        CardPrices_1_amazonPrice: card.CardPrices[0]?.amazon_price,
-        CardPrices_1_cardmarketPrice: card.CardPrices[0]?.cardmarket_price,
-        CardPrices_1_coolstuffincPrice: card.CardPrices[0]?.coolstuffinc_price,
-        CardPrices_1_ebayPrice: card.CardPrices[0]?.ebay_price,
-        CardPrices_1_tcgplayerPrice: card.CardPrices[0]?.tcgplayer_price,
-
-        // CardSets (flattened fields)
-        CardSets_1_setCode: card.CardSets[0]?.set_code,
-        CardSets_1_setName: card.CardSets[0]?.set_name,
-        CardSets_1_setPrice: card.CardSets[0]?.set_price,
-        CardSets_1_setRarity: card.CardSets[0]?.set_rarity,
-        CardSets_1_setRarityCode: card.CardSets[0]?.set_rarity_code,
+        CardID: cards[0].CardID,
+        ATK: cards[0].ATK,
+        Attribute: cards[0].Attribute,
+        DEF: cards[0].DEF,
+        Description: cards[0].Description,
+        FrameType: cards[0].FrameType,
+        Level: cards[0].Level,
+        Name: cards[0].Name,
+        Race: cards[0].Race,
+        Type: cards[0].Type,
+        // CardImages_1_imageUrl: cards[0].CardImages[0]?.image_url,
       })
         .then(() => {
           console.log("Card added:", card);
-          setPopupVisible(true); // Show the popup
-          setTimeout(() => setPopupVisible(false), 2000); // Hide after 2 seconds
+          setPopupVisible(true);
+          setTimeout(() => setPopupVisible(false), 2000);
         })
-        .catch((error) => {
-          console.log("Error adding card:", error);
-        })
-        .finally(() => {
-          setLoading(false); // Set loading to false after the add is complete
-        });
+        .catch((error) => console.log("Error adding card:", error))
+        .finally(() => setLoading(false));
     } else {
       console.log("No card to add.");
     }
   };
 
-  const onRender = () => {
+  const renderedContent = useMemo(() => {
+    const lastPostIndex = currentPage * postsPerPage;
+    const firstPostIndex = lastPostIndex - postsPerPage;
+    const currentPosts = cards.slice(firstPostIndex, lastPostIndex);
+
     if (card) {
+      return <Card cardInfo={card} />;
+    }
+
+    if (cards.length > 0) {
       return (
         <>
-          <div className="card-name-display">{card.Name}</div>
-
-          <div className="card-details-container">
-            <div className="card-image-container">
-              {card ? (
-                <Card cardInfo={card} />
-              ) : (
-                <div></div> // Or return null or a spinner
-              )}
+          {currentPosts.map((card, index) => (
+            <div>
+              <button>
+                +
+                <Card key={index} cardInfo={card} />
+              </button>
             </div>
-
-            <div className="card-info">
-              <div className="card-info-box">
-                <div className="card-attribute">
-                  <span>Type:</span> {card.Race}
-                </div>
-                <div className="card-attribute"></div>
-                <div className="card-attribute">
-                  <span>Level:</span>
-                  {card.Level}
-                </div>
-              </div>
-
-              <div className="card-description-box">
-                <div className="card-description">
-                  <span>{card.Description}</span>
-                </div>
-              </div>
-
-              {/* <button className="card-button"></button> */}
-            </div>
-          </div>
+          ))}
+          <Pagination
+            totalPosts={cards.length}
+            postsPerPage={postsPerPage}
+            setCurrentPage={setCurrentPage}
+          />
         </>
       );
-    } else {
-      return (
-        <div style={{ textAlign: "center", color: "white" }}>{firstSearch}</div>
-      );
     }
-  };
+
+    return (
+      <div style={{ textAlign: "center", color: "white" }}>{firstSearch}</div>
+    );
+  }, [card, cards, currentPage, postsPerPage, firstSearch]); // ✅ Add missing dependencies
 
   return (
     <>
-      {/* Search and Add Form */}
       <form
         style={{
           background: "lightgrey",
-          padding: "0 1rem 0 1rem",
+          padding: "0 1rem",
           borderTop: "1px solid black",
           borderRight: "1px solid black",
           borderLeft: "1px solid black",
@@ -150,18 +121,17 @@ export const SearchPage = () => {
         <h4>
           <strong>Card Search</strong>
         </h4>
-        <label className="required" htmlFor="ygo name"></label>
         <input
           type="text"
-          id="ygo name"
-          name="ygo name"
+          id="ygo-name"
+          name="ygo-name"
           placeholder="Enter card name"
           value={cardName}
           onChange={handleInputChange}
           required
         />
         <div className="form-buttons">
-          <Button onClick={handleFetchCard} type="button">
+          <Button onClick={handleButtonClick} type="button">
             Search
           </Button>
           <Button onClick={handleAddCollection} type="submit">
@@ -170,17 +140,17 @@ export const SearchPage = () => {
         </div>
       </form>
 
-      {/* Loading Spinner */}
+      {/* ✅ Loading Spinner */}
       {loading && (
         <div className="loading-overlay">
           <div className="spinner"></div>
         </div>
       )}
 
-      {/* Card Display */}
-      <div className="container">{onRender()}</div>
+      {/* ✅ Card Display */}
+      <div className="container">{renderedContent}</div>
 
-      {/* Modal Popup */}
+      {/* ✅ Popup Message */}
       {popupVisible && (
         <div className="modal">
           <div className="modal-content">

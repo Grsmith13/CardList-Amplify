@@ -1,19 +1,17 @@
 import "./Card.css";
-
 interface CardInfoProps {
-  ATK: number;
-  DEF: number;
-  Attribute: string;
-  CardID: string;
-  CardImages: any[];
-  CardPrices: any[];
-  CardSets: any[];
-  Description: string;
-  FrameType: string;
-  Level: number;
-  Name: string;
-  Race: string;
-  Type: string;
+  atk: number;
+  def: number;
+  attribute: string;
+  card_images: any[]; // you might want to create more specific types here
+  card_prices: any[];
+  card_sets: any[];
+  desc: string;
+  frameType: string;
+  level: number;
+  name: string;
+  race: string;
+  type: string;
 }
 
 interface CardProps {
@@ -21,23 +19,21 @@ interface CardProps {
 }
 
 export const Card: React.FC<CardProps> = ({ cardInfo }) => {
+  // Destructure and rename the properties from the JSON to match your interface
   const {
-    ATK,
-    DEF,
-    Attribute,
-    // CardID,
-    CardImages,
-    // CardPrices,
-    // CardSets,
-    // Description,
-    // FrameType,
-    Level,
-    Name,
-    Race,
-    // Type,
+    atk: ATK,
+    def: DEF,
+    attribute: Attribute,
+    card_images: CardImages,
+    level: Level,
+    name: Name,
+    race: Race,
+    // Optionally include more fields with renaming if needed:
+    desc: Description,
+    frameType: FrameType,
+    type: Type,
+    // etc.
   } = cardInfo;
-  console.log(CardImages[0].image_url_cropped);
-
   const CardLevel = () => {
     const cardLevel = Level;
 

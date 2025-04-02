@@ -1,11 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthenticator } from "@aws-amplify/ui-react";
 import { SearchPage } from "./SearchPage";
 import { CollectionPage } from "./CollectionPage";
-
 import "./App.css";
+import { fetchAndStore, getData } from "./components/CreateCache";
 
 function App() {
+  useEffect(() => {
+    fetchAndStore();
+  }, []);
+  console.log(getData("Dark Magician"));
   const { signOut, user } = useAuthenticator();
   const [currentPage, setCurrentPage] = useState<string>("collection");
 

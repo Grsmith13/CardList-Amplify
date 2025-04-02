@@ -112,6 +112,12 @@ button:hover {
   background-color: #003366;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding-left: 2rem;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
+  gap: 10px; /* Space between cards */
+  padding: 20px;
 }
 
 /* Card name on top */

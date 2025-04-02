@@ -2,7 +2,6 @@ import express from "express";
 import serverless from "serverless-http";
 import cors from "cors";
 import { fetchCards, fetchCardByName } from "./card.js";
-/* createCards, updateCards, deleteCards  */
 const app = express();
 const port = 3001;
 
@@ -14,6 +13,17 @@ if (process.env.DEVELOPMENT) {
 
 app.get("/", (req, res) => {
   res.send("Hello World!");
+});
+
+app.get("/cards/:name", async (req, res) => {
+  try {
+    const { name } = req.params; // Extract the name from the route
+    const response = await fetchCards(name);
+    res.send(response); // Assuming fetchCards already returns the Items
+  } catch (error) {
+    console.error("Error fetching cards:", error);
+    res.status(500).send({ error: "Internal Server Error" });
+  }
 });
 
 app.get("/card", async (req, res) => {
@@ -36,41 +46,6 @@ app.get("/card", async (req, res) => {
     res.status(400).send(`Error fetching cards: ${err}`);
   }
 });
-// app.post("/card", async (req, res) => {
-//   try {
-//     const card = req.body;
-
-//     const response = await createCards(card);
-
-//     res.send(response);
-//   } catch (err) {
-//     res.status(400).send(`Error creating cards: ${err}`);
-//   }
-// });
-
-// app.put("/card", async (req, res) => {
-//   try {
-//     const card = req.body;
-
-//     const response = await updateCards(card);
-
-//     res.send(response);
-//   } catch (err) {
-//     res.status(400).send(`Error updating cards: ${err}`);
-//   }
-// });
-
-// app.delete("/card/:id", async (req, res) => {
-//   try {
-//     const { id } = req.params;
-
-//     const response = await deleteCards(id);
-
-//     res.send(response);
-//   } catch (err) {
-//     res.status(400).send(`Error deleting cards: ${err}`);
-//   }
-// });
 
 if (process.env.DEVELOPMENT) {
   app.listen(port, () => {

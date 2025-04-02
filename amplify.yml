@@ -9,19 +9,16 @@ frontend:
   phases:
     preBuild:
       commands:
-        # Install Node.js 20.x using nvm or other available method
         - nvm install 20.19.0
         - nvm use 20.19.0
-        - node -v # Verify the correct version is installed
-        - npm -v
     build:
       commands:
         - npm run build
-artifacts:
-  baseDirectory: dist
-  files:
-    - "**/*"
-cache:
-  paths:
-    - .npm/**/*
-    - node_modules/**/*
+  artifacts:
+    baseDirectory: dist # Adjust this to your output directory if necessary
+    files:
+      - "**/*"
+  cache:
+    paths:
+      - .npm/**/*
+      - node_modules/**/*

@@ -5,25 +5,21 @@ import type { Schema } from "../amplify/data/resource";
 import "./SearchPage.css";
 import { Card } from "./components/Card";
 import Pagination from "./components/Pagination";
-import {
-  getCard,
-  getData,
-  searchCardsByKeyword,
-} from "./components/CreateCache";
+import { searchCardsByKeyword } from "./components/CreateCache";
 
 const client = generateClient<Schema>();
 
 export const SearchPage = () => {
-  const [card, setCard] = useState<any>(null);
+  const [card] = useState<any>(null);
   const [cards, setCards] = useState<any[]>([]);
   const [cardName, setCardName] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [firstSearch, setFirstSearch] = useState(
+  const [firstSearch] = useState(
     "Welcome! Please enter the card name you are looking for."
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage, setPostsPerPage] = useState(9);
+  const [postsPerPage] = useState(9);
 
   const handleInputChange = (e: any) => {
     setCardName(e.target.value);

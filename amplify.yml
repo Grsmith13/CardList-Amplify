@@ -9,8 +9,12 @@ frontend:
   phases:
     preBuild:
       commands:
-        - nvm install 20.19.0
-        - nvm use 20.19.0
+        # Install Node.js 20.x using the official NodeSource repository
+        - curl -sL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+        - sudo apt-get install -y nodejs
+        # Verify the installation of Node.js
+        - node -v
+        - npm -v
     build:
       commands:
         - npm run build

@@ -38,7 +38,7 @@ export const SearchPage = () => {
     }
     console.log(cards);
   }, [cardName]);
-
+  //new comment
   const handleAddCollection = () => {
     setLoading(true);
     console.log("cards[0] =", cards[0].CardImages_1_imageUrl);

@@ -29,9 +29,9 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
     name: Name,
     race: Race,
     // Optionally include more fields with renaming if needed:
-    desc: Description,
-    frameType: FrameType,
-    type: Type,
+    // desc: Description,
+    // frameType: FrameType,
+    // type: Type,
     // etc.
   } = cardInfo;
   const CardLevel = () => {

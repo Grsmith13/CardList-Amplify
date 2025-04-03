@@ -39,21 +39,22 @@ export const SearchPage = () => {
     console.log(cards);
   }, [cardName]);
   //new comment
-  const handleAddCollection = () => {
+  const handleAddCollection = (card: any) => {
     setLoading(true);
-    console.log("cards[0] =", cards[0].CardImages_1_imageUrl);
+    console.log("clicked", card);
+    console.log("cards[0] =", card);
     if (cards) {
       client.models.Binder.create({
-        CardID: cards[0].CardID,
-        ATK: cards[0].ATK,
-        Attribute: cards[0].Attribute,
-        DEF: cards[0].DEF,
-        Description: cards[0].Description,
-        FrameType: cards[0].FrameType,
-        Level: cards[0].Level,
-        Name: cards[0].Name,
-        Race: cards[0].Race,
-        Type: cards[0].Type,
+        CardID: card.CardID,
+        ATK: card.ATK,
+        Attribute: card.Attribute,
+        DEF: card.DEF,
+        Description: card.Description,
+        FrameType: card.FrameType,
+        Level: card.Level,
+        Name: card.Name,
+        Race: card.Race,
+        Type: card.Type,
         // CardImages_1_imageUrl: cards[0].CardImages[0]?.image_url,
       })
         .then(() => {
@@ -82,7 +83,7 @@ export const SearchPage = () => {
         <>
           {currentPosts.map((card, index) => (
             <div>
-              <button>
+              <button onClick={() => handleAddCollection(card)}>
                 +
                 <Card key={index} cardInfo={card} />
               </button>

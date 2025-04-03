@@ -41,20 +41,32 @@ export const SearchPage = () => {
   //new comment
   const handleAddCollection = (card: any) => {
     setLoading(true);
-    console.log("clicked", card);
-    console.log("cards[0] =", card);
+    const {
+      id,
+      name,
+      attribute,
+      atk,
+      def,
+      desc,
+      level,
+      race,
+      type,
+      frameType,
+    } = card;
+    console.log("clicked", name, id, def);
+    console.log("card id =", card.CardID);
     if (cards) {
       client.models.Binder.create({
-        CardID: card.CardID,
-        ATK: card.ATK,
-        Attribute: card.Attribute,
-        DEF: card.DEF,
-        Description: card.Description,
-        FrameType: card.FrameType,
-        Level: card.Level,
-        Name: card.Name,
-        Race: card.Race,
-        Type: card.Type,
+        CardID: id,
+        ATK: atk,
+        Attribute: attribute,
+        DEF: def,
+        Description: desc,
+        FrameType: frameType,
+        Level: level,
+        Name: name,
+        Race: race,
+        Type: type,
         // CardImages_1_imageUrl: cards[0].CardImages[0]?.image_url,
       })
         .then(() => {

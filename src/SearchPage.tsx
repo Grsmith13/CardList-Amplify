@@ -52,9 +52,9 @@ export const SearchPage = () => {
       race,
       type,
       frameType,
+      card_images,
     } = card;
-    console.log("clicked", name, id, def);
-    console.log("card id =", card.CardID);
+    console.log("clicked", card_images[0].image_url_cropped);
     if (cards) {
       client.models.Binder.create({
         CardID: id,
@@ -67,7 +67,7 @@ export const SearchPage = () => {
         Name: name,
         Race: race,
         Type: type,
-        // CardImages_1_imageUrl: cards[0].CardImages[0]?.image_url,
+        CardImages_1_imageUrl: card_images[0].image_url_cropped,
       })
         .then(() => {
           console.log("Card added:", card);

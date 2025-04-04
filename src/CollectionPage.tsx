@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import "./CollectionPage.css"; // Import the CSS file
+import { maxWidth } from "@mui/system";
 
 // Initialize the client for querying and mutating the data
 const client = generateClient<Schema>();
@@ -70,7 +71,10 @@ export const CollectionPage = () => {
             <div key={index} className="card-item">
               <h3>{card.Name}</h3>
               <p>
-                <img src={card.CardImages_1_imageUrl ?? ""}></img>
+                <img
+                  src={card.CardImages_1_imageUrl ?? ""}
+                  style={{ maxWidth: "100%" }}
+                />
               </p>
               <p>
                 <strong>Description:</strong> {card.Description}

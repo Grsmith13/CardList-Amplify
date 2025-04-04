@@ -68,7 +68,11 @@ export const CollectionPage = () => {
           {todos.map((card, index) => (
             <div key={index} className="card-item">
               <h3>{card.Name}</h3>
-              <p>{card.CardImages_1_imageUrlCropped}</p>
+              <p>
+                {card.CardImages_1_imageUrlCropped}
+                {card.CardImages_1_imageUrl}
+                {card.CardImages_1_imageUrlSmall}
+              </p>
               <p>
                 <strong>Description:</strong> {card.Description}
               </p>

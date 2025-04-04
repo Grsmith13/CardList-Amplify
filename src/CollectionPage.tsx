@@ -35,6 +35,7 @@ export const CollectionPage = () => {
       try {
         // Find the card by CardID
         const cardToDelete = todos.find((card) => card.CardID === cardID);
+
         if (cardToDelete) {
           // Delete the card from the model
           await client.models.Binder.delete({ id: cardToDelete.id });
@@ -69,9 +70,7 @@ export const CollectionPage = () => {
             <div key={index} className="card-item">
               <h3>{card.Name}</h3>
               <p>
-                {card.CardImages_1_imageUrlCropped}
-                {card.CardImages_1_imageUrl}
-                {card.CardImages_1_imageUrlSmall}
+                <img src={card.CardImages_1_id ?? ""}></img>
               </p>
               <p>
                 <strong>Description:</strong> {card.Description}

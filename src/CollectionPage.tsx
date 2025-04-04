@@ -70,7 +70,7 @@ export const CollectionPage = () => {
             <div key={index} className="card-item">
               <h3>{card.Name}</h3>
               <p>
-                <img src={card.CardImages_1_id ?? ""}></img>
+                <img src={card.CardImages_1_imageUrl ?? ""}></img>
               </p>
               <p>
                 <strong>Description:</strong> {card.Description}

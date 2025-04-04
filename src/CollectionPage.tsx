@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import "./CollectionPage.css"; // Import the CSS file
-import { maxWidth } from "@mui/system";
 
 // Initialize the client for querying and mutating the data
 const client = generateClient<Schema>();

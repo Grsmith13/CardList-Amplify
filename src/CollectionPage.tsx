@@ -7,14 +7,14 @@ import "./CollectionPage.css"; // Import the CSS file
 const client = generateClient<Schema>();
 
 export const CollectionPage = () => {
-  const [todos, setTodos] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
+  const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
   const [loading, setLoading] = useState(true);
 
   // Fetch cards when the component mounts
   useEffect(() => {
     const subscription = client.models.Binder.observeQuery().subscribe({
       next: (data) => {
-        setTodos(data.items);
+        setCards(data.items);
         setLoading(false); // Set loading to false when data is fetched
       },
       error: (err) => {
@@ -34,14 +34,14 @@ export const CollectionPage = () => {
     if (cardID) {
       try {
         // Find the card by CardID
-        const cardToDelete = todos.find((card) => card.CardID === cardID);
+        const cardToDelete = cards.find((card) => card.CardID === cardID);
 
         if (cardToDelete) {
           // Delete the card from the model
           await client.models.Binder.delete({ id: cardToDelete.id });
 
           // Update the UI state after deletion
-          setTodos((prevCards) =>
+          setCards((prevCards) =>
             prevCards.filter((card) => card.id !== cardToDelete.id)
           );
           console.log(`Card with id ${cardToDelete.id} deleted successfully.`);
@@ -56,17 +56,26 @@ export const CollectionPage = () => {
     }
   }
 
+  //Pagination
+
+  const [currentPage] = useState(1);
+  const [postsPerPage] = useState(9);
+
+  //Get Current posts
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexofFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = cards.slice(indexofFirstPost, indexOfLastPost);
+
   return (
     <div className="collection-container">
       <div className="header">
         <h2>My Card Collection</h2>
       </div>
-
       {loading ? (
         <div className="loading">Loading your collection...</div>
       ) : (
         <div className="card-list">
-          {todos.map((card, index) => (
+          {currentPosts.map((card, index) => (
             <div key={index} className="card-item">
               <h3>{card.Name}</h3>
               <p>

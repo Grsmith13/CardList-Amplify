@@ -13,7 +13,7 @@ type Card = Schema["Binder"]["type"];
 export const CollectionPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
-
+  const [totalValue, setTotalValue] = useState(0);
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
@@ -63,6 +63,11 @@ export const CollectionPage = () => {
     }
   }
 
+  const totalPrice = cards.reduce(
+    (total, card) => total + (card.CardPrices_1_tcgplayerPrice ?? 0),
+    0
+  );
+
   //Pagination
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -88,6 +93,10 @@ export const CollectionPage = () => {
     <div className="collection-container">
       <div className="header">
         <h2>My Card Collection</h2>
+        <h2 className="binder-value" style={{ padding: "20" }}>
+          Total collection value is:
+          {"  $" + totalPrice}
+        </h2>
       </div>
       {loading ? (
         <div className="loading">Loading your collection...</div>

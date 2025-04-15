@@ -1,4 +1,10 @@
 /* CollectionPage.css - Styling specific to the collection page */
+.header {
+  display: flex;
+}
+.binder-value {
+  padding-left: 20px;
+}
 
 /* Main container for the collection page */
 .collection-container {

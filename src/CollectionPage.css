@@ -16,39 +16,119 @@
   color: #333;
 }
 
-/* Card list container - displays cards in a responsive grid layout */
-.card-list {
+/* Container: 3x3 responsive grid */
+.card-binder {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  width: 100%;
-  margin-top: 2rem;
-  max-width: 1200px;
-}
-
-/* Each card item */
-.card-item {
-  background-color: white;
   padding: 1rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
+  max-width: 100%;
+  max-height: 1200px;
+  margin: 0 auto;
+  background: green; /* Optional: dark background to let cards pop */
 }
 
+.card-binder.two-pages {
+  grid-template-columns: repeat(6, 1fr);
+  column-gap: 1.5rem;
+  background:
+    linear-gradient(
+      to right,
+      transparent 49.5%,
+      rgba(0, 0, 0, 0.2) 50%,
+      transparent 50.5%
+    ),
+    green;
+}
+
+/* Each card container */
+.card-item {
+  width: 250px;
+
+  border-radius: 1.5px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.3);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+/* On hover, scale up the card a little */
 .card-item:hover {
-  transform: scale(1.05);
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
 }
 
-.card-item h3 {
-  font-size: 1.5rem;
+/* Top section: card art */
+/* This wraps the image and gives it a 2px black border */
+.card-art {
+  padding: 1.5px 1.5px;
+  background: #4c5481f5;
+  display: inline-block;
+  border-top: 3px solid #4c5481;
+  border-left: 3px solid #4c5481;
+  border-bottom: 3px solid #4c5481;
+  border-right: 4px solid #4c5481;
+  border-top-color: #00000017;
+  border-left-color: #0000001a;
+  border-right-color: #0000001a;
+  border-bottom-color: #00000017;
+  box-shadow: 1px 0.5px 0px #60606054;
+}
+
+/* Ensure the image takes the full width of its container */
+.card-art img {
+  width: 100%;
+  display: block;
+}
+
+/* Bottom section: stats */
+.card-btm {
+  background: #ea6300;
+  padding: 0.6rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-top: 4px solid #f5945c;
+  border-left: 4px solid #f5945c;
+  border-bottom: 4px solid #f5945c;
+  border-right: 4px solid #f5945c;
+  border-right-color: #0000004f;
+  border-left-color: #0000004f;
+  border-bottom-color: #0000003b;
+  box-shadow: 1px 0.5px 0px #60606054;
+}
+
+/* Level and Attribute row */
+.card-LVL-ATT {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Impact", sans-serif;
+  font-size: 1.1em;
   color: #333;
+  text-shadow: 1px 1px 0px #fff; /* subtle glow effect */
 }
 
-.card-item p {
-  font-size: 1rem;
-  color: #555;
-  margin-bottom: 0.5rem;
+/* ATK/DEF row */
+.card-ATK-DEF {
+  display: flex;
+  justify-content: space-between;
+  font-family: "Arial Black", sans-serif;
+  font-size: 0.95em;
+  color: #222;
+  background: #e0d9c6;
+  padding: 0.3rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+  .card-binder {
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  }
 }
 
 /* Delete button */
@@ -64,4 +144,23 @@
 
 .card-item button:hover {
   background-color: #ff1e1e;
+}
+
+.placeholder-card {
+  width: 250px;
+  height: 342.97px;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.08) 10px,
+    rgba(0, 0, 0, 0.05) 10px,
+    rgba(0, 0, 0, 0.05) 20px
+  );
+  border: 2px dashed rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.3);
+  font-style: italic;
+  font-family: sans-serif;
 }

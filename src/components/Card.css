@@ -18,14 +18,17 @@
   width: 300px;
   height: 450px;
   background-color: #ea6316;
-  background-image: linear-gradient(
+  background-image:
+    linear-gradient(
       135deg,
       rgba(255, 255, 255, 0.2) 25%,
       rgba(255, 255, 255, 0.1) 50%,
       rgba(255, 255, 255, 0.2) 75%
     ),
     url("src\\assets\\card_texture.png");
-  background-size: 100% 100%, 150px 150px; /* Adjust the size of the texture */
+  background-size:
+    100% 100%,
+    150px 150px; /* Adjust the size of the texture */
   background-position: center;
   background-repeat: repeat;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
@@ -87,9 +90,9 @@
   left: 5px;
   right: 5px;
   bottom: 5px;
-  background: #fff; /* Inner card background */
-  border-radius: 8px; /* Match inner corners */
-  z-index: -1; /* Place it behind the content */
+  background: #fff;
+  border-radius: 8px;
+  z-index: -1;
 }
 
 .card-artwork img {
@@ -154,5 +157,6 @@
   border-right-color: #0000004f;
   border-bottom-color: #0000004f;
   box-shadow: 1px 0.5px 0px #60606054;
-  font-family: "Press Start 2P", cursive; /* Font reminiscent of Gameboy Advance era */
+  font-family:
+    "Press Start 2P", cursive; /* Font reminiscent of Gameboy Advance era */
 }

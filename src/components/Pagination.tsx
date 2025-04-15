@@ -13,7 +13,7 @@ const Pagination: React.FC<PaginationProps> = ({
 }) => {
   const totalPages = Math.ceil(totalPosts / postsPerPage);
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
-
+  console.log(totalPages);
   return (
     <div>
       {pages.map((page, index) => (

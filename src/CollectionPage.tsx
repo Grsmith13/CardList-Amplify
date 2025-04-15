@@ -13,7 +13,7 @@ type Card = Schema["Binder"]["type"];
 export const CollectionPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
-  const [totalValue, setTotalValue] = useState(0);
+
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 

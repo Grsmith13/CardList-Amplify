@@ -143,9 +143,6 @@ export const SearchPage = () => {
           <Button onClick={handleButtonClick} type="button">
             Search
           </Button>
-          <Button onClick={handleAddCollection} type="submit">
-            Add
-          </Button>
         </div>
       </form>
 

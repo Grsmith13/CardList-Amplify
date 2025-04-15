@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
+import Pagination from "./components/Pagination";
+
 import "./CollectionPage.css"; // Import the CSS file
 
 // Initialize the client for querying and mutating the data
@@ -58,7 +60,7 @@ export const CollectionPage = () => {
 
   //Pagination
 
-  const [currentPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(9);
 
   //Get Current posts
@@ -111,6 +113,11 @@ export const CollectionPage = () => {
           ))}
         </div>
       )}
+      <Pagination
+        totalPosts={cards.length}
+        postsPerPage={postsPerPage}
+        setCurrentPage={setCurrentPage}
+      />
     </div>
   );
 };

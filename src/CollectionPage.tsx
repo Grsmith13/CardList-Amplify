@@ -63,6 +63,7 @@ export const CollectionPage = () => {
     }
   }
 
+  console.log(cards);
   const totalPrice = cards.reduce(
     (total, card) => total + (card.CardPrices_1_tcgplayerPrice ?? 0),
     0

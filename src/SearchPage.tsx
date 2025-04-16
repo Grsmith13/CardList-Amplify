@@ -53,6 +53,7 @@ export const SearchPage = () => {
       type,
       frameType,
       card_images,
+      card_TCGPlayer,
     } = card;
     console.log("clicked", card_images[0].image_url_cropped);
     if (cards) {
@@ -68,6 +69,7 @@ export const SearchPage = () => {
         Race: race,
         Type: type,
         CardImages_1_imageUrl: card_images[0].image_url_cropped,
+        CardPrices_1_tcgplayerPrice: card_TCGPlayer,
       })
         .then(() => {
           console.log("Card added:", card);

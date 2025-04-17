@@ -37,14 +37,12 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
   const CardLevel = () => {
     const cardLevel = Level;
 
-    const imgPath = "src\\assets\\yugioh_star2.PNG";
-
     return (
       <>
         {Array.from({ length: cardLevel }).map((_, index) => (
           <img
             key={index}
-            src={imgPath}
+            src={"/assets/yugioh_star2.png"}
             alt={`Image ${index + 1}`}
             style={{ margin: "0px", width: "25px", height: "25px" }}
           />
@@ -103,7 +101,7 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
                 <img
                   className="img-ATT"
                   style={{ fontSize: ".4rem" }}
-                  src={`src/assets/${Attribute?.toLowerCase() ?? "default"} symbol.svg`}
+                  src={`/assets/${Attribute?.toLowerCase() ?? "default"} symbol.svg`}
                   alt="Card Art"
                 />
               </span>

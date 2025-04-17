@@ -47,16 +47,19 @@
   margin-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
-
-  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: clamp(10px, 5vw, 18px);
+  align-items: center;
   text-align: center;
   line-height: 1.8;
   font-weight: bold;
   display: inline-block;
-  border-top: 4px solid #f5945c; /* Top-left highlight */
-  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-top: 4px solid #fdf2f25b; /* Top-left highlight */
+  border-left: 4px solid #fdf2f25b; /* Top-left highlight */
   border-bottom: 4px solid #f5945c; /* Top-left highlight */
-  border-right: 4px solid #f5945c; /* Top-left highlight */
+  border-right: 4px solid #f5945c;
   border-right-color: #0000004f;
   border-bottom-color: #0000004f;
   box-shadow: 1px 0.5px 0px #60606054;
@@ -135,8 +138,8 @@
   margin-right: 5px;
   margin-left: 5px;
   padding: 4px; /* Space inside the element */
-  border-top: 4px solid #f5945c; /* Top-left highlight */
-  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-top: 4px solid #fdf2f25b; /* Top-left highlight */
+  border-left: 4px solid #fdf2f25b; /* Top-left highlight */
   border-bottom: 4px solid #f5945c; /* Top-left highlight */
   border-right: 4px solid #f5945c; /* Top-left highlight */
   border-right-color: #0000004f;
@@ -150,8 +153,8 @@
   flex-direction: column;
   margin-right: 10px;
   padding: 10px; /* Space inside the element */
-  border-top: 4px solid #f5945c; /* Top-left highlight */
-  border-left: 4px solid #f5945c; /* Top-left highlight */
+  border-top: 4px solid #fdf2f25b; /* Top-left highlight */
+  border-left: 4px solid #fdf2f25b; /* Top-left highlight */
   border-bottom: 4px solid #f5945c; /* Top-left highlight */
   border-right: 4px solid #f5945c; /* Top-left highlight */
   border-right-color: #0000004f;

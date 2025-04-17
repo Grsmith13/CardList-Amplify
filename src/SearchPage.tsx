@@ -15,7 +15,7 @@ export const SearchPage = () => {
   const [cardName, setCardName] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [firstSearch] = useState(
+  const [firstSearch, setFirstSearch] = useState(
     "Welcome! Please enter the card name you are looking for."
   );
   const [currentPage, setCurrentPage] = useState(1);
@@ -26,19 +26,27 @@ export const SearchPage = () => {
   };
 
   const handleButtonClick = useCallback(async () => {
+    setCurrentPage(1);
     if (!cardName.trim()) return;
+
     try {
       setLoading(true);
       const cardData = await searchCardsByKeyword(cardName);
-      setCards(cardData);
+
+      if (cardData.length === 0) {
+        setFirstSearch(` ${cardName} is not a valid card.`);
+        setCards([]);
+      } else {
+        setCards(cardData);
+        setFirstSearch(""); // Clear any old message
+      }
     } catch (error) {
       console.error("Error fetching card data:", error);
+      setFirstSearch("An error occurred while fetching cards.");
     } finally {
       setLoading(false);
     }
-    console.log(cards);
   }, [cardName]);
-  //new comment
   const handleAddCollection = (card: any) => {
     setLoading(true);
     const {
@@ -53,7 +61,7 @@ export const SearchPage = () => {
       type,
       frameType,
       card_images,
-      price_TCGplayer,
+      card_prices,
     } = card;
     console.log("clicked", card_images[0].image_url_cropped);
     if (cards) {
@@ -69,7 +77,7 @@ export const SearchPage = () => {
         Race: race,
         Type: type,
         CardImages_1_imageUrl: card_images[0].image_url_cropped,
-        CardPrices_1_tcgplayerPrice: price_TCGplayer[0].card_prices,
+        CardPrices_1_tcgplayerPrice: card_prices[0].tcgplayer_price,
       })
         .then(() => {
           console.log("Card added:", card);
@@ -94,28 +102,29 @@ export const SearchPage = () => {
 
     if (cards.length > 0) {
       return (
-        <>
+        <div className="card-grid">
           {currentPosts.map((card, index) => (
-            <div>
-              <button onClick={() => handleAddCollection(card)}>
-                +
-                <Card key={index} cardInfo={card} />
-              </button>
-            </div>
+            <button
+              key={index}
+              onClick={() => handleAddCollection(card)}
+              style={{
+                margin: 0,
+                padding: 0,
+                background: "none",
+                border: "none",
+              }}
+            >
+              <Card cardInfo={card} />
+            </button>
           ))}
-          <Pagination
-            totalPosts={cards.length}
-            postsPerPage={postsPerPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </>
+        </div>
       );
     }
 
     return (
       <div style={{ textAlign: "center", color: "white" }}>{firstSearch}</div>
     );
-  }, [card, cards, currentPage, postsPerPage, firstSearch]); // ✅ Add missing dependencies
+  }, [card, cards, currentPage, postsPerPage, firstSearch]);
 
   return (
     <>
@@ -156,19 +165,28 @@ export const SearchPage = () => {
       )}
 
       {/* ✅ Card Display */}
-      <div className="container">{renderedContent}</div>
-
+      <div
+        className="container"
+        style={
+          !card ? { display: "flex", justifyContent: "center" } : undefined
+        }
+      >
+        {renderedContent}
+      </div>
+      {!card ? (
+        <div style={{ display: "flex", justifyContent: "right" }}>
+          <Pagination
+            totalPosts={cards.length}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      ) : null}
       {/* ✅ Popup Message */}
       {popupVisible && (
         <div className="modal">
           <div className="modal-content">
             <p>Your card has been added to your collection!</p>
-            <button
-              onClick={() => setPopupVisible(false)}
-              className="close-btn"
-            >
-              Close
-            </button>
+            <button onClick={() => setPopupVisible(false)}>Close</button>
           </div>
         </div>
       )}

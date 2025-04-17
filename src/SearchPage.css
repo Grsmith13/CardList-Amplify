@@ -78,12 +78,12 @@ button:hover {
   display: flex; /* Flexbox for centering */
   justify-content: center; /* Centers content horizontally */
   align-items: center; /* Centers content vertically */
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(255, 251, 251, 0.5); /* Semi-transparent background */
   z-index: 10000; /* Ensures the modal is above all other content */
 }
 
 .modal-content {
-  background: rgb(0, 0, 0);
+  background: rgb(253, 253, 253);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -120,6 +120,13 @@ button:hover {
   padding: 20px;
 }
 
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start; /* aligns cards left */
+  gap: 3rem;
+  max-width: 1000px;
+}
 /* Card name on top */
 .card-name-display {
   font-family: "Press Start 2P", cursive; /* Optional: Retro font */
@@ -135,7 +142,6 @@ button:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
-/* Card detail container (Image + Info) */
 .card-details-container {
   display: flex;
   justify-content: flex-start;

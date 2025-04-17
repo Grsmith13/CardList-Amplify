@@ -30,7 +30,7 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
     race: Race,
     // Optionally include more fields with renaming if needed:
     // desc: Description,
-    // frameType: FrameType,
+    frameType: FrameType,
     // type: Type,
     // etc.
   } = cardInfo;
@@ -53,22 +53,69 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
     );
   };
 
+  const getCardBackground = (frame: any) => {
+    console.log(frame);
+    switch (frame) {
+      case "fusion":
+        return "violet";
+
+      case "spell":
+        return "darkgreen";
+
+      case "trap":
+        return "purple";
+
+      case "ritual":
+        return "blue";
+
+      case "xyz":
+        return "black";
+      case "syncro":
+        return "white";
+
+      case "pendulum":
+        return "green";
+
+      default:
+        console.log("Error card frame not found.");
+    }
+  };
+
   return (
-    <div className="card">
-      <div className="card-top">{Name}</div>
+    <div className="card" style={{ background: getCardBackground(FrameType) }}>
+      <div className="card-top" style={{ paddingLeft: ".25rem" }}>
+        {Name}
+      </div>
       <div className="card-level">{CardLevel()}</div>
       <div className="card-artwork">
         <img src={CardImages[0].image_url_cropped}></img>
       </div>
       <div className="card-stats">
-        <div className="card-stats-type">
-          <span>{Race}</span>
-          <span>{Attribute}</span>
-        </div>
-        <div className="card-stats-AD">
-          <span>A: {ATK}</span>
-          <span>D: {DEF}</span>
-        </div>
+        {FrameType !== "trap" && FrameType !== "spell" ? (
+          <>
+            <div
+              className="card-stats-type"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <span style={{ paddingRight: ".5rem" }}>{Race}</span>
+              <span>
+                {" "}
+                <img
+                  className="img-ATT"
+                  style={{ fontSize: ".4rem" }}
+                  src={`src/assets/${Attribute?.toLowerCase() ?? "default"} symbol.svg`}
+                  alt="Card Art"
+                />
+              </span>
+            </div>
+            <div className="card-stats-AD">
+              <span>A: {ATK}</span>
+              <span>D: {DEF}</span>
+            </div>
+          </>
+        ) : (
+          <div> </div>
+        )}
       </div>
     </div>
   );

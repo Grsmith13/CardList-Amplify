@@ -13,7 +13,6 @@ type Card = Schema["Binder"]["type"];
 export const CollectionPage = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
-
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
 
@@ -74,11 +73,12 @@ export const CollectionPage = () => {
   const [currentPage, setCurrentPage] = useState(1);
 
   //Get Current posts
+
   const indexofFirstPost = currentPage === 1 ? 0 : 9 + (currentPage - 2) * 18;
   const indexOfLastPost = currentPage === 1 ? 9 : indexofFirstPost + 18;
   const currentPosts = cards.slice(indexofFirstPost, indexOfLastPost);
 
-  const totalSlots = currentPage === 1 ? 0 : 18;
+  const totalSlots = currentPage === 1 ? 9 : 18;
   const filledPosts: ((typeof cards)[number] | null)[] = [...currentPosts];
   while (filledPosts.length < totalSlots) {
     filledPosts.push(null);
@@ -90,15 +90,62 @@ export const CollectionPage = () => {
     setShowPopup(true);
   };
 
+  const getCardBackground = (frame: any) => {
+    console.log(frame);
+    switch (frame) {
+      case "fusion":
+        return "violet";
+
+      case "spell":
+        return "darkgreen";
+
+      case "trap":
+        return "purple";
+
+      case "ritual":
+        return "blue";
+
+      case "xyz":
+        return "black";
+      case "syncro":
+        return "white";
+
+      case "pendulum":
+        return "green";
+
+      default:
+        console.log("Error card frame not found.");
+    }
+  };
+
+  const CardLevel = (level: any) => {
+    const cardLevel = level;
+
+    const imgPath = "src\\assets\\yugioh_star2.PNG";
+
+    return (
+      <>
+        {Array.from({ length: cardLevel }).map((_, index) => (
+          <img
+            key={index}
+            src={imgPath}
+            alt={`Image ${index + 1}`}
+            style={{ margin: "0px", width: "25px", height: "25px" }}
+          />
+        ))}
+      </>
+    );
+  };
+
   return (
     <div className="collection-container">
       <div className="header">
         <h2>My Card Collection</h2>
-        <h2 className="binder-value" style={{ padding: "20" }}>
-          Total collection value is:
-          {"  $" + totalPrice}
-        </h2>
       </div>
+      <h2 className="binder-value" style={{ padding: "20" }}>
+        Total collection value is:
+        {"  $" + totalPrice.toFixed(2)}
+      </h2>
       {loading ? (
         <div className="loading">Loading your collection...</div>
       ) : (
@@ -117,15 +164,67 @@ export const CollectionPage = () => {
                       alt="Card Art"
                     />
                   </div>
-                  <div className="card-btm">
-                    <div className="card-LVL-ATT">
-                      <span>{card.Type}</span>
-                      <span>{card.FrameType}</span>
-                    </div>
-                    <div className="card-ATK-DEF">
-                      <span>A: {card.ATK}</span>
-                      <span>D: {card.DEF}</span>
-                    </div>
+                  <div
+                    className="card-btm"
+                    style={{
+                      background: getCardBackground(card?.FrameType) || "",
+                    }}
+                  >
+                    {card?.FrameType !== "trap" &&
+                    card?.FrameType !== "spell" ? (
+                      <>
+                        <div className="card-LVL-ATT">
+                          <div className="card-LVL">
+                            {CardLevel(card.Level)}
+                          </div>
+                          <div className="card-ATT">
+                            <img
+                              className="img-ATT"
+                              style={{ fontSize: ".4rem" }}
+                              src={`src/assets/${card?.Attribute?.toLowerCase() ?? "default"} symbol.svg`}
+                              alt="Card Art"
+                            />
+                          </div>
+                        </div>
+                        <div className="card-ATK-DEF">
+                          <div className="stat-box">
+                            {" "}
+                            <span>{card.ATK}</span>
+                          </div>
+                          <div className="stat-box">
+                            <span>{card.DEF}</span>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <div className="magic-trap-box">
+                        <div
+                          className="stat-box"
+                          style={{
+                            display: "flex",
+                            justifyContent: "center",
+                            paddingTop: ".75rem",
+                            paddingBottom: ".75rem",
+                          }}
+                        >
+                          {card?.FrameType == "trap" ? (
+                            <img
+                              className="img-ATT"
+                              style={{ fontSize: ".4rem" }}
+                              src={"src\\assets\\trap symbol.svg"}
+                              alt="Card Art"
+                            />
+                          ) : (
+                            <img
+                              className="img-ATT"
+                              style={{ fontSize: ".4rem" }}
+                              src={"src\\assets\\spell symbol.svg"}
+                              alt="Card Art"
+                            />
+                          )}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </>
               ) : (
@@ -159,11 +258,7 @@ export const CollectionPage = () => {
           no
         </button>
       </Popup>
-      <Pagination
-        totalPosts={cards.length}
-        postsPerPage={currentPage === 1 ? 9 : 18}
-        setCurrentPage={setCurrentPage}
-      />
+      <Pagination totalPosts={cards.length} setCurrentPage={setCurrentPage} />
     </div>
   );
 };

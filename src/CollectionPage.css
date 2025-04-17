@@ -71,13 +71,13 @@
 /* This wraps the image and gives it a 2px black border */
 .card-art {
   padding: 1.5px 1.5px;
-  background: #4c5481f5;
+  background: #4c5481de;
   display: inline-block;
   border-top: 3px solid #4c5481;
   border-left: 3px solid #4c5481;
   border-bottom: 3px solid #4c5481;
   border-right: 4px solid #4c5481;
-  border-top-color: #00000017;
+  border-top-color: #00000062;
   border-left-color: #0000001a;
   border-right-color: #0000001a;
   border-bottom-color: #00000017;
@@ -92,12 +92,14 @@
 
 /* Bottom section: stats */
 .card-btm {
+  width: 250px;
+  height: 107.91px;
   background: #ea6300;
   padding: 0.6rem 0.4rem;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  border-top: 4px solid #f5945c;
+  justify-content: center;
+  border-top: 4px solid #00000052;
   border-left: 4px solid #f5945c;
   border-bottom: 4px solid #f5945c;
   border-right: 4px solid #f5945c;
@@ -107,27 +109,46 @@
   box-shadow: 1px 0.5px 0px #60606054;
 }
 
-/* Level and Attribute row */
 .card-LVL-ATT {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-between; /* allows space between */
+  align-items: center;
   font-family: "Impact", sans-serif;
   font-size: 1.1em;
   color: #333;
-  text-shadow: 1px 1px 0px #fff; /* subtle glow effect */
+  text-shadow: 1px 1px 0px #fff;
+  width: 100%; /* Ensure it takes full width */
+  white-space: nowrap; /* Prevents line breaks */
 }
 
+.card-LVL {
+  flex-grow: 1; /* allows it to take available space */
+  text-align: center; /* centers the level text */
+  overflow: hidden; /* prevent overflow */
+}
+
+.card-ATT {
+  margin-left: auto; /* push it to the right */
+}
 /* ATK/DEF row */
 .card-ATK-DEF {
   display: flex;
   justify-content: space-between;
+  text-align: end;
   font-family: "Arial Black", sans-serif;
   font-size: 0.95em;
-  color: #222;
-  background: #e0d9c6;
+
   padding: 0.3rem;
   border-radius: 4px;
-  margin-top: 0.5rem;
+  margin-top: 0.01rem;
+}
+
+.stat-box {
+  border: 2px solid #aa8533; /* brownish edge */
+  background: rgb(255, 237, 214);
+  padding: 0.4rem;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
 }
 
 /* Responsive adjustments for smaller screens */
@@ -154,7 +175,7 @@
 
 .placeholder-card {
   width: 250px;
-  height: 342.97px;
+  height: 355.97px;
   background: linear-gradient(
     45deg,
     rgba(255, 255, 255, 0.08),
@@ -169,4 +190,9 @@
   color: rgba(255, 255, 255, 0.3);
   font-style: italic;
   font-family: sans-serif;
+}
+
+.img-ATT {
+  width: 26px;
+  height: 26px;
 }

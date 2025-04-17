@@ -2,16 +2,27 @@ import React from "react";
 
 interface PaginationProps {
   totalPosts: number;
-  postsPerPage: number;
+
   setCurrentPage: (page: number) => void;
 }
 
 const Pagination: React.FC<PaginationProps> = ({
   totalPosts,
-  postsPerPage,
+
   setCurrentPage,
 }) => {
-  const totalPages = Math.ceil(totalPosts / postsPerPage);
+  const postsOnFirstPage = 9;
+  const postsOnOtherPages = 18;
+
+  // Subtract postsOnFirstPage from totalPosts to get what's left after page 1
+  const remainingPosts = Math.max(totalPosts - postsOnFirstPage, 0);
+
+  // Calculate pages needed after first
+  const additionalPages = Math.ceil(remainingPosts / postsOnOtherPages);
+
+  // Total pages = first page + additional pages
+  const totalPages = totalPosts <= postsOnFirstPage ? 1 : 1 + additionalPages;
+
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   console.log(totalPages);
   return (

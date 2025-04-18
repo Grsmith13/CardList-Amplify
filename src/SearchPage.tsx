@@ -11,6 +11,7 @@ const client = generateClient<Schema>();
 
 export const SearchPage = () => {
   const [card] = useState<any>(null);
+  const [selectedCard, setSelectedCard] = useState<any>(null);
   const [cards, setCards] = useState<any[]>([]);
   const [cardName, setCardName] = useState("");
   const [popupVisible, setPopupVisible] = useState(false);
@@ -47,6 +48,7 @@ export const SearchPage = () => {
       setLoading(false);
     }
   }, [cardName]);
+
   const handleAddCollection = (card: any) => {
     setLoading(true);
     const {
@@ -81,8 +83,7 @@ export const SearchPage = () => {
       })
         .then(() => {
           console.log("Card added:", card);
-          setPopupVisible(true);
-          setTimeout(() => setPopupVisible(false), 2000);
+          setPopupVisible(false);
         })
         .catch((error) => console.log("Error adding card:", error))
         .finally(() => setLoading(false));
@@ -91,14 +92,16 @@ export const SearchPage = () => {
     }
   };
 
+  const handleCardClicked = (card: any) => {
+    setSelectedCard(card);
+    console.log(card);
+    setPopupVisible(true);
+  };
+
   const renderedContent = useMemo(() => {
     const lastPostIndex = currentPage * postsPerPage;
     const firstPostIndex = lastPostIndex - postsPerPage;
     const currentPosts = cards.slice(firstPostIndex, lastPostIndex);
-
-    if (card) {
-      return <Card cardInfo={card} />;
-    }
 
     if (cards.length > 0) {
       return (
@@ -106,7 +109,7 @@ export const SearchPage = () => {
           {currentPosts.map((card, index) => (
             <button
               key={index}
-              onClick={() => handleAddCollection(card)}
+              onClick={() => handleCardClicked(card)}
               style={{
                 margin: 0,
                 padding: 0,
@@ -124,7 +127,7 @@ export const SearchPage = () => {
     return (
       <div style={{ textAlign: "center", color: "white" }}>{firstSearch}</div>
     );
-  }, [card, cards, currentPage, postsPerPage, firstSearch]);
+  }, [cards, currentPage, postsPerPage, firstSearch]);
 
   return (
     <>
@@ -173,19 +176,38 @@ export const SearchPage = () => {
       >
         {renderedContent}
       </div>
-      {!card ? (
-        <div style={{ display: "flex", justifyContent: "right" }}>
+      {cards.length > 0 && (
+        <div style={{ display: "flex", justifyContent: "center" }}>
           <Pagination
             totalPosts={cards.length}
             setCurrentPage={setCurrentPage}
           />
         </div>
-      ) : null}
+      )}
+
       {/* ✅ Popup Message */}
       {popupVisible && (
         <div className="modal">
           <div className="modal-content">
-            <p>Your card has been added to your collection!</p>
+            <h2>{selectedCard.name}</h2>
+            <p>
+              <strong>Level:</strong> {selectedCard.level}
+            </p>
+            <p>
+              <strong>Type:</strong> {selectedCard.type}
+            </p>
+            <p>
+              <strong>Effect:</strong> {selectedCard.desc}
+            </p>
+            <p>
+              <strong>Attack:</strong> {selectedCard.atk}
+            </p>
+            <p>
+              <strong>Defense:</strong> {selectedCard.def}
+            </p>
+            <button onClick={() => handleAddCollection(selectedCard)}>
+              add
+            </button>
             <button onClick={() => setPopupVisible(false)}>Close</button>
           </div>
         </div>

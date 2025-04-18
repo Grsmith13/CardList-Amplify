@@ -4,7 +4,6 @@ import { generateClient } from "aws-amplify/data";
 import Pagination from "./components/Pagination";
 
 import "./CollectionPage.css"; // Import the CSS file
-import Popup from "./components/Popup";
 
 // Initialize the client for querying and mutating the data
 const client = generateClient<Schema>();
@@ -15,7 +14,7 @@ export const CollectionPage = () => {
   const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
-
+  const [cardInfoVisible, setCardInfoVisible] = useState(false);
   // Fetch cards when the component mounts
   useEffect(() => {
     const subscription = client.models.Binder.observeQuery().subscribe({
@@ -34,7 +33,17 @@ export const CollectionPage = () => {
       subscription.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    const handleBeforeUnload = async () => {
+      await deleteAllCardsFromBinder();
+    };
 
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []);
   // Delete card from the collection by ID
   async function deleteCardFromCollection(cardID: string | undefined) {
     if (cardID) {
@@ -71,7 +80,7 @@ export const CollectionPage = () => {
   //Pagination
 
   const [currentPage, setCurrentPage] = useState(1);
-
+  console.log(showPopup);
   //Get Current posts
 
   const indexofFirstPost = currentPage === 1 ? 0 : 9 + (currentPage - 2) * 18;
@@ -88,6 +97,7 @@ export const CollectionPage = () => {
     if (!card) return;
     setSelectedCard(card);
     setShowPopup(true);
+    setCardInfoVisible(true);
   };
 
   const getCardBackground = (frame: any) => {
@@ -135,128 +145,186 @@ export const CollectionPage = () => {
     );
   };
 
+  async function deleteAllCardsFromBinder() {
+    try {
+      const result = await client.models.Binder.list();
+
+      const deletePromises = result.data.map((card) =>
+        client.models.Binder.delete({ id: card.id })
+      );
+
+      await Promise.all(deletePromises);
+
+      console.log("All cards deleted from the binder.");
+    } catch (error) {
+      console.error("Failed to delete all cards:", error);
+    }
+  }
+
   return (
-    <div className="collection-container">
-      <div className="header">
-        <h2>My Card Collection</h2>
-      </div>
-      <h2 className="binder-value" style={{ padding: "20" }}>
-        Total collection value is:
-        {"  $" + totalPrice.toFixed(2)}
-      </h2>
-      {loading ? (
-        <div className="loading">Loading your collection...</div>
-      ) : (
-        <div className={`card-binder ${currentPage > 1 ? "two-pages" : ""}`}>
-          {filledPosts.map((card, index) => (
-            <div
-              key={index}
-              className="card-item"
-              onClick={() => handleCardClicked(card)}
-            >
-              {card ? (
-                <>
-                  <div className="card-art">
-                    <img
-                      src={card.CardImages_1_imageUrl || ""}
-                      alt="Card Art"
-                    />
-                  </div>
-                  <div
-                    className="card-btm"
-                    style={{
-                      background: getCardBackground(card?.FrameType) || "",
-                    }}
-                  >
-                    {card?.FrameType !== "trap" &&
-                    card?.FrameType !== "spell" ? (
-                      <>
-                        <div className="card-LVL-ATT">
-                          <div className="card-LVL">
-                            {CardLevel(card.Level)}
-                          </div>
-                          <div className="card-ATT">
-                            <img
-                              className="img-ATT"
-                              style={{ fontSize: ".4rem" }}
-                              src={`/assets/${card?.Attribute?.toLowerCase() ?? "default"} symbol.svg`}
-                              alt="Card Art"
-                            />
-                          </div>
-                        </div>
-                        <div className="card-ATK-DEF">
-                          <div className="stat-box">
-                            {" "}
-                            <span>{card.ATK}</span>
-                          </div>
-                          <div className="stat-box">
-                            <span>{card.DEF}</span>
-                          </div>
-                        </div>
-                      </>
-                    ) : (
-                      <div className="magic-trap-box">
-                        <div
-                          className="stat-box"
-                          style={{
-                            display: "flex",
-                            justifyContent: "center",
-                            paddingTop: ".75rem",
-                            paddingBottom: ".75rem",
-                          }}
-                        >
-                          {card?.FrameType == "trap" ? (
-                            <img
-                              className="img-ATT"
-                              style={{ fontSize: ".4rem" }}
-                              src={`/assets/trap symbol.svg`}
-                              alt="Card Art"
-                            />
-                          ) : (
-                            <img
-                              className="img-ATT"
-                              style={{ fontSize: ".4rem" }}
-                              src={`/assets/spell symbol.svg`}
-                              alt="Card Art"
-                            />
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </>
-              ) : (
-                <div className="placeholder-card">
-                  <div className="empty-slot"> </div>
-                </div>
-              )}
-            </div>
-          ))}
+    <>
+      <div className="collection-container">
+        <div className="header">
+          <h2>My Card Collection</h2>
         </div>
-      )}
-      <Popup trigger={showPopup} setTrigger={setShowPopup}>
-        <h3>Are you sure you want to delete this card?</h3>
-        <button
-          onClick={() => {
-            if (selectedCard?.CardID) {
-              deleteCardFromCollection(selectedCard?.CardID);
-            } else {
-              console.log("card does not exist");
-            }
-            setShowPopup(false);
-          }}
-        >
-          Confirm Delete
-        </button>
-        <button
-          onClick={() => {
-            setShowPopup(false);
-          }}
-        >
-          no
-        </button>
-      </Popup>
-      <Pagination totalPosts={cards.length} setCurrentPage={setCurrentPage} />
-    </div>
+        <h2 className="binder-value" style={{ padding: "20" }}>
+          Total collection value is:
+          {"  $" + totalPrice.toFixed(2)}
+        </h2>
+        {loading ? (
+          <div className="loading">Loading your collection...</div>
+        ) : (
+          <div className={`card-binder ${currentPage > 1 ? "two-pages" : ""}`}>
+            {filledPosts.map((card, index) => (
+              <div
+                key={index}
+                className="card-item"
+                onClick={() => handleCardClicked(card)}
+              >
+                {card ? (
+                  <>
+                    <button
+                      className="card-button"
+                      onClick={(e) => {
+                        setSelectedCard(card);
+                        console.log("delete button clicked");
+                        e.stopPropagation(); // Prevent click from triggering card details popup
+                        if (card?.CardID != null) {
+                          deleteCardFromCollection(card.CardID);
+                        }
+                      }}
+                    >
+                      ✕
+                    </button>
+                    <div className="card-art">
+                      <img
+                        src={card.CardImages_1_imageUrl || ""}
+                        alt="Card Art"
+                      />
+                    </div>
+                    <div
+                      className="card-btm"
+                      style={{
+                        background: getCardBackground(card?.FrameType) || "",
+                      }}
+                    >
+                      {card?.FrameType !== "trap" &&
+                      card?.FrameType !== "spell" ? (
+                        <>
+                          <div className="card-LVL-ATT">
+                            <div className="card-LVL">
+                              {CardLevel(card.Level)}
+                            </div>
+                            <div className="card-ATT">
+                              <img
+                                className="img-ATT"
+                                style={{ fontSize: ".4rem" }}
+                                src={`/assets/${card?.Attribute?.toLowerCase() ?? "default"} symbol.svg`}
+                                alt="Card Art"
+                              />
+                            </div>
+                          </div>
+                          <div className="card-ATK-DEF">
+                            <div className="stat-box">
+                              {" "}
+                              <span>{card.ATK}</span>
+                            </div>
+                            <div className="stat-box">
+                              <span>{card.DEF}</span>
+                            </div>
+                          </div>
+                        </>
+                      ) : (
+                        <div className="magic-trap-box">
+                          <div
+                            className="stat-box"
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                              paddingTop: ".75rem",
+                              paddingBottom: ".75rem",
+                            }}
+                          >
+                            {card?.FrameType == "trap" ? (
+                              <img
+                                className="img-ATT"
+                                style={{ fontSize: ".4rem" }}
+                                src={`/assets/trap symbol.svg`}
+                                alt="Card Art"
+                              />
+                            ) : (
+                              <img
+                                className="img-ATT"
+                                style={{ fontSize: ".4rem" }}
+                                src={`/assets/spell symbol.svg`}
+                                alt="Card Art"
+                              />
+                            )}
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  </>
+                ) : (
+                  <div className="placeholder-card">
+                    <div className="empty-slot"> </div>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        )}
+        {cardInfoVisible && (
+          <div className="card-info-box">
+            <p>
+              <strong>Level:</strong> {selectedCard?.Level}
+            </p>
+            <p>
+              <strong>Type:</strong> {selectedCard?.Type}
+            </p>
+            <p>
+              <strong>Effect:</strong> {selectedCard?.Description}
+            </p>
+            <p>
+              <strong>Attack:</strong> {selectedCard?.ATK}
+            </p>
+            <p>
+              <strong>Defense:</strong> {selectedCard?.DEF}
+            </p>
+            <p>
+              <strong>$</strong> {selectedCard?.CardPrices_1_tcgplayerPrice}
+            </p>
+          </div>
+        )}
+        {/* <Popup trigger={showPopup} setTrigger={setShowPopup}>
+          <h3>Are you sure you want to delete this card?</h3>
+          <button
+            onClick={() => {
+              if (selectedCard?.CardID) {
+                deleteCardFromCollection(selectedCard?.CardID);
+              } else {
+                console.log("card does not exist");
+              }
+              setShowPopup(false);
+            }}
+          >
+            Confirm Delete
+          </button>
+          <button
+            onClick={() => {
+              setShowPopup(false);
+            }}
+          >
+            no
+          </button>
+        </Popup> */}
+        <div className="pagination-container">
+          <Pagination
+            totalPosts={cards.length}
+            setCurrentPage={setCurrentPage}
+          />
+        </div>
+      </div>
+    </>
   );
 };

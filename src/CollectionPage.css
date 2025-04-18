@@ -1,16 +1,20 @@
 /* CollectionPage.css - Styling specific to the collection page */
 .header {
-  display: flex;
+  grid-column: 1;
+  text-align: center;
 }
 .binder-value {
   padding-left: 20px;
+  grid-column: 1;
+  text-align: center;
 }
 
 /* Main container for the collection page */
 .collection-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr auto;
+
   padding: 2rem;
 
   min-height: 100vh;
@@ -25,6 +29,7 @@
 /* Container: 3x3 responsive grid */
 .card-binder {
   display: grid;
+  grid-column: 1;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   padding: 1rem;
@@ -50,7 +55,7 @@
 /* Each card container */
 .card-item {
   width: 250px;
-
+  position: relative;
   border-radius: 1.5px;
   overflow: hidden;
   display: flex;
@@ -195,4 +200,87 @@
 .img-ATT {
   width: 26px;
   height: 26px;
+}
+
+/* Container for the card binder and card info */
+.collection-content {
+  display: flex;
+  align-items: center; /* Centers the content vertically */
+  justify-content: space-between; /* Space between card binder and card info */
+  width: 100%;
+  padding: 20px;
+}
+
+/* Container for the card binder section */
+.card-binder-container {
+  flex-grow: 1; /* Takes up remaining space */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+  padding: 1rem;
+  max-width: 100%;
+  max-height: 1200px;
+}
+
+/* Container for the card info section */
+.card-info-container {
+  width: 300px; /* Adjust to your desired width */
+  margin-left: 20px; /* Space between the binder and card info */
+  padding: 1rem;
+  background-color: #f4f4f4; /* Background color for card info */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Optional: Adds a shadow for better separation */
+}
+
+/* For example: when card info is visible */
+.card-info-container.active {
+  display: block;
+}
+
+.card-info-box {
+  grid-column: 2; /* Placed in the second column */
+  grid-row: 3; /* Placed in the middle row */
+  margin: 0;
+  padding: 1rem;
+
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
+  height: 35%;
+  font-family: "Press Start 2P", monospace; /* pixelated font */
+  font-size: 14px; /* GBA style: small and chunky */
+  color: #ffffff; /* bright white text */
+  background-color: #2d0030; /* deep purple typical of GBA palette */
+  padding: 10px;
+  border: 2px solid #ffffff; /* simple white border */
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  line-height: 1.5;
+  image-rendering: pixelated; /* keeps sharp pixel look */
+  text-shadow: 1px 1px 0 #000000; /* old-school 'outline' for readability */
+}
+
+.pagination-container {
+  grid-column: 1;
+  text-align: center;
+}
+.card-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #ff4d4f; /* red for delete */
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  z-index: 10;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.card-button:hover {
+  background: #d9363e;
 }

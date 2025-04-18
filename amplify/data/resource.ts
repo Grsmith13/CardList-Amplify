@@ -75,11 +75,14 @@ const schema = a.schema({
       binderId: a.string(), // Foreign key to Binder
     })
     .authorization((allow) => [allow.publicApiKey()]),
+
+
 });
 
 
 
 
+  
 
 
 

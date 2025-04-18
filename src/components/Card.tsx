@@ -1,4 +1,6 @@
+import { useState } from "react";
 import "./Card.css";
+
 interface CardInfoProps {
   atk: number;
   def: number;
@@ -44,7 +46,11 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
             key={index}
             src={"/assets/yugioh_star2.png"}
             alt={`Image ${index + 1}`}
-            style={{ margin: "0px", width: "25px", height: "25px" }}
+            style={{
+              margin: "0px",
+              width: Level === 12 ? "22px" : "25px",
+              height: Level === 12 ? "22px" : "25px",
+            }}
           />
         ))}
       </>
@@ -78,12 +84,33 @@ export const Card: React.FC<CardProps> = ({ cardInfo }) => {
         console.log("Error card frame not found.");
     }
   };
+  const [isHovered, setIsHovered] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
 
   return (
-    <div className="card" style={{ background: getCardBackground(FrameType) }}>
-      <div className="card-top" style={{ paddingLeft: ".25rem" }}>
-        {Name}
+    <div
+      className="card"
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      style={{ background: getCardBackground(FrameType) }}
+    >
+      {isHovered && (
+        <div className="card-popup">
+          <h2>{Name}</h2>
+        </div>
+      )}
+      <div className="card-top">
+        {" "}
+        <p>{Name}</p>
       </div>
+
       <div className="card-level">{CardLevel()}</div>
       <div className="card-artwork">
         <img src={CardImages[0].image_url_cropped}></img>

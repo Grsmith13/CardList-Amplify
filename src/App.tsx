@@ -4,8 +4,14 @@ import { SearchPage } from "./SearchPage";
 import { CollectionPage } from "./CollectionPage";
 import "./App.css";
 import { fetchAndStore, getData } from "./components/CreateCache";
+import { deleteAllCardsFromBinder } from "./components/DeleteAllCards";
 
-function App() {
+interface AppProps {
+  isGuest: boolean;
+}
+
+function App({ isGuest }: AppProps) {
+  console.log("isGuest =", isGuest);
   useEffect(() => {
     fetchAndStore();
   }, []);
@@ -14,19 +20,18 @@ function App() {
   const [currentPage, setCurrentPage] = useState<string>("collection");
 
   const renderPage = () => {
-    if (!user) {
-      return (
-        <div className="auth-message">
-          <p>Please sign in to access your collection and search for cards.</p>
-        </div>
-      );
-    }
-
     if (currentPage === "search") {
       return <SearchPage />;
     }
 
     return <CollectionPage />;
+  };
+
+  const handleSignOut = async () => {
+    await deleteAllCardsFromBinder(); // <-- delete cards before sign out
+
+    await signOut(); // clear the Cognito session
+    window.location.reload(); // restart your app at main.tsx
   };
 
   return (
@@ -42,6 +47,11 @@ function App() {
         <button onClick={() => setCurrentPage("collection")}>
           My Collection
         </button>
+        {isGuest ? (
+          <button onClick={() => handleSignOut()}>Sign out</button>
+        ) : (
+          ""
+        )}
       </div>
 
       {/* Main Content Area */}

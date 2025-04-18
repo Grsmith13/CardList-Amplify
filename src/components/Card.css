@@ -47,10 +47,12 @@
   margin-top: 5px;
   margin-left: 10px;
   margin-right: 10px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  font-size: clamp(10px, 5vw, 18px);
+  font-size: clamp(10px, 1.5vw, 15px);
+  white-space: normal;
+  display: -webkit-box;
+
+  -webkit-box-orient: vertical;
+
   align-items: center;
   text-align: center;
   line-height: 1.8;
@@ -64,6 +66,7 @@
   border-bottom-color: #0000004f;
   box-shadow: 1px 0.5px 0px #60606054;
   font-family: "Press Start 2P", cursive; /* Optional: Retro font */
+  overflow: hidden;
 }
 
 .card-type {
@@ -162,4 +165,22 @@
   box-shadow: 1px 0.5px 0px #60606054;
   font-family:
     "Press Start 2P", cursive; /* Font reminiscent of Gameboy Advance era */
+}
+.card-popup {
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: -5px; /* Adjust this value to move the popup above the card */
+  left: 50%;
+
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  color: white;
+  padding: 5px 15px;
+  padding-bottom: 0px;
+  border-radius: 5px;
+  font-size: 12px; /* Smaller font size */
+  z-index: 10; /* Ensure the popup is on top of the card */
+  width: 300px; /* Set a fixed width to make the popup smaller */
+  text-align: center;
 }

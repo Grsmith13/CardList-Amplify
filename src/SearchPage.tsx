@@ -1,15 +1,20 @@
 import { Button } from "@aws-amplify/ui-react";
-import { useState, useMemo, useCallback } from "react";
+import { useState, useMemo, useCallback, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "../amplify/data/resource";
 import "./SearchPage.css";
 import { Card } from "./components/Card";
 import Pagination from "./components/Pagination";
 import { searchCardsByKeyword } from "./components/CreateCache";
+import { getOrCreateGuestId } from "./components/CreateID";
+import { useAuthenticator } from "@aws-amplify/ui-react";
 
 const client = generateClient<Schema>();
 
 export const SearchPage = () => {
+  const { user } = useAuthenticator((context) => [context.user]);
+
+  const isGuest = !user;
   const [card] = useState<any>(null);
   const [selectedCard, setSelectedCard] = useState<any>(null);
   const [cards, setCards] = useState<any[]>([]);
@@ -21,10 +26,18 @@ export const SearchPage = () => {
   );
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(9);
-
+  const [ownerId, setOwnerId] = useState("");
   const handleInputChange = (e: any) => {
     setCardName(e.target.value);
   };
+
+  useEffect(() => {
+    if (isGuest) {
+      setOwnerId(getOrCreateGuestId());
+    } else {
+      setOwnerId(user.userId);
+    }
+  }, []);
 
   const handleButtonClick = useCallback(async () => {
     setCurrentPage(1);
@@ -50,7 +63,9 @@ export const SearchPage = () => {
   }, [cardName]);
 
   const handleAddCollection = (card: any) => {
+    console.log(ownerId, user?.userId);
     setLoading(true);
+
     const {
       id,
       name,
@@ -80,6 +95,8 @@ export const SearchPage = () => {
         Type: type,
         CardImages_1_imageUrl: card_images[0].image_url_cropped,
         CardPrices_1_tcgplayerPrice: card_prices[0].tcgplayer_price,
+        isGuest,
+        UserID: ownerId,
       })
         .then(() => {
           console.log("Card added:", card);
@@ -94,7 +111,7 @@ export const SearchPage = () => {
 
   const handleCardClicked = (card: any) => {
     setSelectedCard(card);
-    console.log(card);
+
     setPopupVisible(true);
   };
 

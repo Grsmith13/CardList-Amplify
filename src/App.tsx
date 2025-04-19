@@ -8,11 +8,15 @@ import { deleteAllCardsFromBinder } from "./components/DeleteAllCards";
 
 interface AppProps {
   isGuest: boolean;
+  setButtonVisible: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-function App({ isGuest }: AppProps) {
+function App({ isGuest, setButtonVisible }: AppProps) {
   console.log("isGuest =", isGuest);
   useEffect(() => {
+    if (isGuest === false) {
+      setButtonVisible(false);
+    }
     fetchAndStore();
   }, []);
   console.log(getData("Dark Magician"));
@@ -24,25 +28,30 @@ function App({ isGuest }: AppProps) {
       return <SearchPage />;
     }
 
-    return <CollectionPage />;
+    return <CollectionPage isGuest={isGuest} />;
   };
 
   const handleSignOut = async () => {
-    await deleteAllCardsFromBinder(); // <-- delete cards before sign out
+    if (isGuest) {
+      await deleteAllCardsFromBinder(); // delete cards before sign out
+      setButtonVisible(true); // this doesn't need await if it's just a state setter
+      await signOut(); // clear the Cognito session
+      window.location.reload(); // if needed
+    } else {
+      setButtonVisible(true);
+      await signOut();
+    }
 
-    await signOut(); // clear the Cognito session
-    window.location.reload(); // restart your app at main.tsx
+    // Optional: reset guest state or refresh the page
+
+    // window.location.reload(); // if needed
   };
 
   return (
     <div className="app-container">
       {/* Header Bar */}
       <div className="auth-header-bar">
-        {user && (
-          <button onClick={signOut} className="sign-out-btn">
-            Sign out
-          </button>
-        )}
+        {user && <button onClick={() => handleSignOut()}>Sign out</button>}
         <button onClick={() => setCurrentPage("search")}>Search Cards</button>
         <button onClick={() => setCurrentPage("collection")}>
           My Collection

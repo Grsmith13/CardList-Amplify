@@ -8,11 +8,12 @@ import outputs from "../amplify_outputs.json";
 import { fetchAuthSession } from "aws-amplify/auth";
 import { Authenticator } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
-
+import { getOrCreateGuestId } from "./components/CreateID";
 Amplify.configure(outputs);
 
 const Root = () => {
   const [isGuest, setIsGuest] = useState(false);
+  const [buttonVisible, setButtonVisible] = useState(true);
 
   useEffect(() => {
     if (isGuest) {
@@ -29,10 +30,17 @@ const Root = () => {
     }
   }, [isGuest]);
 
+  const handleGuestLogin = () => {
+    setIsGuest(true); // Set to guest mode
+    setButtonVisible(false); // Hide the button
+  };
+
   if (isGuest) {
+    getOrCreateGuestId();
+    console.log("guest id is ", getOrCreateGuestId());
     return (
       <Authenticator.Provider>
-        <App isGuest={isGuest} />
+        <App isGuest={isGuest} setButtonVisible={setButtonVisible} />
       </Authenticator.Provider>
     );
   } else {
@@ -40,23 +48,19 @@ const Root = () => {
       <div
         style={{ padding: "2rem", textAlign: "center", position: "relative" }}
       >
-        <button
-          className="button-signin"
-          style={{
-            zIndex: "413",
-            position: "absolute",
-            bottom: "411px", // adjust as needed
-            left: "50%",
-            transform: "translateX(-50%)",
-            padding: "3px",
-          }}
-          onClick={() => setIsGuest(true)}
-        >
-          Continue as Guest
-        </button>
-
+        {buttonVisible && (
+          <button
+            className="button-signin"
+            style={{
+              marginTop: "2rem",
+            }}
+            onClick={handleGuestLogin}
+          >
+            Continue as Guest
+          </button>
+        )}
         <Authenticator>
-          <App isGuest={isGuest} />
+          <App isGuest={isGuest} setButtonVisible={setButtonVisible} />
         </Authenticator>
       </div>
     );

@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import type { Schema } from "../amplify/data/resource";
 import { generateClient } from "aws-amplify/data";
 import Pagination from "./components/Pagination";
+import { useAuthenticator } from "@aws-amplify/ui-react";
+import { getOrCreateGuestId } from "./components/CreateID";
 
 import "./CollectionPage.css"; // Import the CSS file
 
@@ -9,30 +11,46 @@ import "./CollectionPage.css"; // Import the CSS file
 const client = generateClient<Schema>();
 
 type Card = Schema["Binder"]["type"];
-export const CollectionPage = () => {
+
+interface AppProps {
+  isGuest: boolean;
+}
+export const CollectionPage = ({ isGuest }: AppProps) => {
+  const { user } = useAuthenticator((context) => [context.user]);
+
   const [showPopup, setShowPopup] = useState(false);
   const [cards, setCards] = useState<Array<Schema["Binder"]["type"]>>([]); // Adjust according to your schema
   const [loading, setLoading] = useState(false);
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [cardInfoVisible, setCardInfoVisible] = useState(false);
+  const [ownerId, setOwnerId] = useState("");
+
   // Fetch cards when the component mounts
   useEffect(() => {
-    const subscription = client.models.Binder.observeQuery().subscribe({
+    if (isGuest) {
+      setOwnerId(getOrCreateGuestId());
+    } else {
+      setOwnerId(user.userId);
+    }
+    const subscription = client.models.Binder.observeQuery({
+      filter: {
+        UserID: {
+          eq: ownerId,
+        },
+      },
+    }).subscribe({
       next: (data) => {
         setCards(data.items);
-        setLoading(false); // Set loading to false when data is fetched
+        setLoading(false);
       },
       error: (err) => {
         console.error("Error fetching data:", err);
-        setLoading(false); // Set loading to false if there's an error
+        setLoading(false);
       },
     });
 
-    // Cleanup the subscription on unmount
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    return () => subscription.unsubscribe();
+  }, [ownerId]);
   useEffect(() => {
     const handleBeforeUnload = async () => {
       await deleteAllCardsFromBinder();

@@ -19,7 +19,10 @@ const schema = a.schema({
       Name: a.string(), // Name as a string
       Race: a.string(), // Race as a string
       Type: a.string(), // Type as a string
-      
+
+      isGuest: a.boolean(), // ✅ New field added here
+      UserID: a.string(),
+
       // CardImages as individual fields (Not using lists or references)
       CardImages_1_id: a.string(), // Example for a Card Image
       CardImages_1_imageUrl: a.string(), // Image URL

@@ -43,10 +43,7 @@ const schema = a.schema({
       CardSets_1_setRarity: a.string(), // Set rarity
       CardSets_1_setRarityCode: a.string(), // Set rarity code
     })
-    .authorization((allow) => [
-      allow.publicApiKey(),
-      allow.authenticated(),
-    ]),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   // Define the CardPrice model (flattened fields to avoid references)
   CardPrice: a
@@ -58,10 +55,7 @@ const schema = a.schema({
       tcgplayerPrice: a.float(),
       binderId: a.string(), // Foreign key to Binder
     })
-    .authorization((allow) => [
-      allow.publicApiKey(),
-      allow.authenticated(),
-    ]),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   // Define the CardSet model (flattened fields to avoid references)
   CardSet: a
@@ -73,10 +67,7 @@ const schema = a.schema({
       setRarityCode: a.string(),
       binderId: a.string(), // Foreign key to Binder
     })
-    .authorization((allow) => [
-      allow.publicApiKey(),
-      allow.authenticated(),
-    ]),
+    .authorization((allow) => [allow.publicApiKey()]),
 
   // Define the CardImage model (flattened fields to avoid references)
   CardImage: a
@@ -86,10 +77,7 @@ const schema = a.schema({
       imageUrlSmall: a.string(),
       binderId: a.string(), // Foreign key to Binder
     })
-    .authorization((allow) => [
-      allow.publicApiKey(),
-      allow.authenticated(),
-    ]),
+    .authorization((allow) => [allow.publicApiKey()]),
 
 
 });

@@ -8,7 +8,7 @@ Work in progress Yu-Gi-Oh card application
 ## Features
 
 - **Authentication**: Setup with Amazon Cognito for secure user authentication.
-- **API**: Ready-to-use GraphQL endpoint with AWS AppSync.
+- **API**: https://ygoprodeck.com/api-guide/
 - **Database**: Real-time database powered by Amazon DynamoDB.
 
 ## Deploying to AWS
